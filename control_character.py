@@ -1,4 +1,6 @@
 from pico2d import *
+
+import running_player
 from runningGround import RunningGround
 from running_player import RunningPlayer
 
@@ -12,23 +14,22 @@ def handle_events():
             playing = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             playing = False
-        #else:
-            #boy.handle_event(event)
-
+        else:
+            running_player.handle_event(event)
 
 
 def reset_world():
     global playing
     global runningGround
     global world
-    global runningPlyaer
+    global running_player
 
     runningGround = RunningGround()
-    runningPlyaer = RunningPlayer()
+    running_player = RunningPlayer()
 
     world = []
     world.append(runningGround)
-    world.append(runningPlyaer)
+    world.append(running_player)
     playing = True
 
 def update_world():
