@@ -22,14 +22,14 @@ class StartGame:
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(6,661-150,31-6,150-131,100,100,50,80)
+        player.image.clip_draw(6,661-150,31-6,150-131,100,100,60,80)
 
 
 class Run:
     @staticmethod
     def enter(player,e):
 
-        player.x += 50
+        player.x += 10
     @staticmethod
     def exit(player,e):
         player.frame += 1
@@ -42,10 +42,21 @@ class Run:
 
     @staticmethod
     def draw(player):
-        if player.frame == 0:
-            player.image.clip_draw(8,661-33,11,32,player.x+100,player.y+50,50,90)
-        elif player.frame == 1:
-            player.image.clip_draw(8, 661 - 33, 11, 32, player.x + 100, player.y + 50, 50, 90)
+        # if player.frame == 0:
+        #     player.image.clip_draw(8,661-33,11,32,player.x+100,player.y+50,50,90)
+        if player.frame == 1:
+            player.image.clip_draw(28, 661 - 33, 12, 32, player.x, player.y + 30, 50, 96)
+        elif player.frame == 2:
+            player.image.clip_draw(46, 661 - 33, 14, 32, player.x, player.y + 30, 55, 96)
+        elif player.frame == 3:
+            player.image.clip_draw(62, 661 - 33, 16, 32, player.x, player.y + 30, 60, 96)
+        elif player.frame == 4:
+            player.image.clip_draw(81, 661 - 33, 26, 28, player.x, player.y + 30, 90, 92)
+        elif player.frame == 5:
+            player.image.clip_draw(115, 661 - 33, 21, 32, player.x, player.y + 30, 85, 96)
+        elif player.frame == 6:
+            player.image.clip_draw(143, 661 - 33, 15, 32, player.x, player.y + 30, 80, 96)
+            player.frame = 2
 
 class StateMachine:
     def __init__(self, player):
@@ -77,7 +88,7 @@ class RunningPlayer:
         self.x = 100
         self.y = 100
         self.image = load_image('player_animation.png')
-        self.frame = 0
+        self.frame = 1
         self.action = 0
         self.state_machine = StateMachine(self)
         self.state_machine.start()
