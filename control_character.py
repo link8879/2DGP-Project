@@ -1,5 +1,7 @@
 from pico2d import *
 from runningGround import RunningGround
+from running_player import RunningPlayer
+
 
 def handle_events():
     global playing
@@ -19,10 +21,14 @@ def reset_world():
     global playing
     global runningGround
     global world
+    global runningPlyaer
 
     runningGround = RunningGround()
+    runningPlyaer = RunningPlayer()
+
     world = []
     world.append(runningGround)
+    world.append(runningPlyaer)
     playing = True
 
 def update_world():
@@ -40,14 +46,15 @@ open_canvas(800,600)
 reset_world()
 
 while playing:
-    # image = load_image('player_animation.png')
-    # image.clip_draw(8,661-33,11,32,100,100,50,80)
-
+    image = load_image('player_animation.png')
+    # image.clip_draw(8,661-33,11,32,100,100,50,80) # 달리기 처음 위치
+    #image.clip_draw(6,661-150,31-6,150-131,100,100,50,80) #달리기 준비 모션
+    #update_canvas()
     handle_events()
     update_world()
     render_world()
     update_canvas()
-    
+
     delay(0.01)
 close_canvas()
    #runningGround.draw()
