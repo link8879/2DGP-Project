@@ -3,7 +3,7 @@ from pico2d import *
 import running_player
 from runningGround import RunningGround
 from running_player import RunningPlayer
-
+from com_running_player import ComRunningPlayer
 
 def handle_events():
     global playing
@@ -16,20 +16,23 @@ def handle_events():
             playing = False
         else:
             running_player.handle_event(event)
-
+            com_running_player.handle_event(event)
 
 def reset_world():
     global playing
     global runningGround
     global world
     global running_player
+    global com_running_player
 
     runningGround = RunningGround()
     running_player = RunningPlayer()
+    com_running_player = ComRunningPlayer()
 
     world = []
     world.append(runningGround)
     world.append(running_player)
+    world.append(com_running_player)
     playing = True
 
 def update_world():

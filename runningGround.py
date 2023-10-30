@@ -5,7 +5,7 @@ class RunningGround:
         self.image = load_image('running_ground.png')
 
     def draw(self):
-        self.image.draw(750,300)
+        self.image.clip_draw(0,0,800,600,400,300)
 
     def update(self):
         pass
