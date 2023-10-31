@@ -28,7 +28,7 @@ class StartGame:
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(6, 661 - 150, 31 - 6, 150 - 131, 100, 250, 75, 57)
+        player.image.clip_draw(6, 661 - 150, 31 - 6, 150 - 131, 20, 250, 75, 57)
 
 last_update_time = 0
 
@@ -96,7 +96,7 @@ class StateMachine:
 
 class ComRunningPlayer:
     def __init__(self):
-        self.x = 100
+        self.x = 20
         self.y = 250
         self.frame = 1
         self.image = load_image('complayer_animation.png')

@@ -22,8 +22,7 @@ class StartGame:
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(6,661-150,31-6,150-131,100,100,75,57)
-
+        player.image.clip_draw(6,661-150,31-6,150-131,30,100,75,57)
 
 class Run:
     @staticmethod
@@ -85,7 +84,7 @@ class StateMachine:
 
 class RunningPlayer:
     def __init__(self):
-        self.x = 100
+        self.x = 20
         self.y = 100
         self.image = load_image('player_animation.png')
         self.frame = 1
