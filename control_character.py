@@ -4,6 +4,7 @@ import running_player
 from runningGround import RunningGround
 from running_player import RunningPlayer
 from com_running_player import ComRunningPlayer
+from camera import Camera
 
 def handle_events():
     global playing
@@ -24,9 +25,11 @@ def reset_world():
     global world
     global running_player
     global com_running_player
+    global camera
 
-    runningGround = RunningGround()
-    running_player = RunningPlayer()
+    camera = Camera()
+    runningGround = RunningGround(camera)
+    running_player = RunningPlayer(camera)
     com_running_player = ComRunningPlayer()
 
     world = []

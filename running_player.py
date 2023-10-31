@@ -1,7 +1,7 @@
 #달리기 게임 플레이어
 from pico2d import load_image
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE
-
+from camera import Camera
 
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
@@ -27,8 +27,10 @@ class StartGame:
 class Run:
     @staticmethod
     def enter(player,e):
-
-        player.x += 10
+        if player.x <= 500:
+            player.x += 10
+        else:
+            player.camera.x += 20
     @staticmethod
     def exit(player,e):
         player.frame += 1
@@ -83,9 +85,10 @@ class StateMachine:
         self.cur_state.draw(self.player)
 
 class RunningPlayer:
-    def __init__(self):
+    def __init__(self, camera):
         self.x = 20
         self.y = 100
+        self.camera = camera
         self.image = load_image('player_animation.png')
         self.frame = 1
         self.action = 0
