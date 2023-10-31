@@ -3,6 +3,8 @@ from pico2d import load_image
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE
 from camera import Camera
 
+click_space = 0     # 스페이스 누른 횟수
+
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
@@ -13,7 +15,6 @@ class StartGame:
 
     @staticmethod
     def do(player):
-        print("준비")
         pass
 
     @staticmethod
@@ -27,7 +28,7 @@ class StartGame:
 class Run:
     @staticmethod
     def enter(player,e):
-        if player.x <= 500:
+        if player.x <= 500 or click_space >= 84:
             player.x += 10
         else:
             player.camera.x += 20
@@ -72,6 +73,9 @@ class StateMachine:
                 self.cur_state.exit(self.player,e)
                 self.cur_state = next_state
                 self.cur_state.enter(self.player,e)
+                global click_space
+                click_space += 1
+                print(click_space)
                 return True
         return False
 

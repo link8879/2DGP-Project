@@ -17,7 +17,6 @@ class StartGame:
 
     @staticmethod
     def do(player):
-        print("준비")
         if get_time() - player.wait_time > 2:
             player.state_machine.handle_event(('TIME_OUT', 0))
         pass
