@@ -30,7 +30,7 @@ def reset_world():
     camera = Camera()
     runningGround = RunningGround(camera)
     running_player = RunningPlayer(camera)
-    com_running_player = ComRunningPlayer()
+    com_running_player = ComRunningPlayer(camera)
 
     world = []
     world.append(runningGround)

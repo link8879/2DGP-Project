@@ -16,7 +16,7 @@ class StartGame:
         pass
 
     @staticmethod
-    def do(player):
+    def do(player,camera):
         if get_time() - player.wait_time > 2:
             player.state_machine.handle_event(('TIME_OUT', 0))
         pass
@@ -40,13 +40,13 @@ class Run:
         pass
 
     @staticmethod
-    def do(player):
+    def do(player,camera):
         global last_update_time
 
         current_time = get_time()
         if current_time - last_update_time > 0.3:  # 0.2초(200 밀리초)마다 로직 실행
             player.frame += 1
-            player.x += 10
+            player.x += 10 - camera.x
             last_update_time = current_time
 
 
@@ -69,8 +69,9 @@ class Run:
             player.frame = 2
 
 class StateMachine:
-    def __init__(self, player):
+    def __init__(self, player,camera):
         self.player = player
+        self.camera = camera
         self.cur_state = StartGame
         self.transitions = {StartGame: {time_out: Run},
                             Run:{}}
@@ -88,18 +89,18 @@ class StateMachine:
         self.cur_state.enter(self.player,('START',0))
 
     def update(self):
-        self.cur_state.do(self.player)
+        self.cur_state.do(self.player,self.camera)
 
     def draw(self):
         self.cur_state.draw(self.player)
 
 class ComRunningPlayer:
-    def __init__(self):
+    def __init__(self,camera):
         self.x = 20
         self.y = 250
         self.frame = 1
         self.image = load_image('complayer_animation.png')
-        self.state_machine = StateMachine(self)
+        self.state_machine = StateMachine(self,camera)
         self.state_machine.start()
 
     def update(self):
