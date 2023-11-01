@@ -19,7 +19,7 @@ def handle_events():
             running_player.handle_event(event)
             com_running_player.handle_event(event)
 
-def reset_world():
+def init():
     global playing
     global runningGround
     global world
@@ -50,18 +50,30 @@ def render_world():
 
 
 open_canvas(800,600)
-reset_world()
+init()
+
+
+def update():
+    update_world()
+
+def finish():
+    pass
+
+
+def draw():
+    clear_canvas()
+    render_world()
+    update_canvas()
+
 
 while playing:
-    image = load_image('player_animation.png')
     # image.clip_draw(8,661-33,11,32,100,100,50,80) # 달리기 처음 위치
     #image.clip_draw(6,661-150,31-6,150-131,100,100,50,80) #달리기 준비 모션
     #update_canvas()
     handle_events()
-    update_world()
-    render_world()
-    update_canvas()
-
+    update()
+    draw()
     delay(0.01)
+finish()
 close_canvas()
    #runningGround.draw()
