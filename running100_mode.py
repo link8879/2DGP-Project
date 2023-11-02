@@ -7,6 +7,7 @@ from runningGround import RunningGround
 from running_player import RunningPlayer
 from com_running_player import ComRunningPlayer
 from camera import Camera
+from finish_line import FinishLine
 
 def handle_events():
     global playing
@@ -28,26 +29,31 @@ def init():
     global running_player
     global com_running_player
     global camera
+    global player_finish_line
+    global com_finish_line
 
     camera = Camera()
     runningGround = RunningGround(camera)
     running_player = RunningPlayer(camera)
     com_running_player = ComRunningPlayer(camera)
+    player_finish_line = FinishLine(100,100,camera)
+    com_finish_line = FinishLine(100,100,camera)
 
-    world = []
-    world.append(runningGround)
-    world.append(running_player)
-    world.append(com_running_player)
+
+    game_world.add_object(runningGround,0)
+    game_world.add_object(running_player,1)
+    game_world.add_object(com_running_player,1)
+    game_world.add_object(player_finish_line,0)
+    game_world.add_object(com_finish_line,0)
+
     playing = True
 
 def update_world():
-    for o in world:
-        o.update()
+    game_world.update()
 
 def render_world():
     clear_canvas()
-    for o in world:
-        o.draw()
+    game_world.render()
     update_canvas()
 
 
