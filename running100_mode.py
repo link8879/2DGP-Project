@@ -23,9 +23,7 @@ def handle_events():
             com_running_player.handle_event(event)
 
 def init():
-    global playing
     global runningGround
-    global world
     global running_player
     global com_running_player
     global camera
@@ -36,8 +34,8 @@ def init():
     runningGround = RunningGround(camera)
     running_player = RunningPlayer(camera)
     com_running_player = ComRunningPlayer(camera)
-    player_finish_line = FinishLine(100,100,camera)
-    com_finish_line = FinishLine(100,100,camera)
+    player_finish_line = FinishLine(100,100,camera,running_player)
+    com_finish_line = FinishLine(100,100,camera,running_player)
 
 
     game_world.add_object(runningGround,0)

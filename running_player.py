@@ -1,9 +1,10 @@
 #달리기 게임 플레이어
 from pico2d import load_image
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE
-from camera import Camera
 
-click_space = 0     # 스페이스 누른 횟수
+
+import finish_line
+from camera import Camera
 
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
@@ -28,7 +29,7 @@ class StartGame:
 class Run:
     @staticmethod
     def enter(player,e):
-        if player.x <= 500 or click_space >= 84:
+        if player.x <= 500 or player.space_down_count >= 84:
             player.x += 10
         else:
             player.camera.x += 20
@@ -67,15 +68,14 @@ class StateMachine:
         self.transitions = {StartGame: {space_down: Run},
                             Run:{space_down: Run}}
 
-    def handle_event(self, e):
+    def handle_event(self, e,player):
         for check_event, next_state in self.transitions[self.cur_state].items():
             if check_event(e):
                 self.cur_state.exit(self.player,e)
                 self.cur_state = next_state
                 self.cur_state.enter(self.player,e)
-                global click_space
-                click_space += 1
-                print(click_space)
+                player.space_down_count += 1
+                print(player.space_down_count)
                 return True
         return False
 
@@ -98,12 +98,13 @@ class RunningPlayer:
         self.action = 0
         self.state_machine = StateMachine(self)
         self.state_machine.start()
+        self.space_down_count = 0
 
     def update(self):
         self.state_machine.update()
 
     def handle_event(self, event):
-        self.state_machine.handle_event(('INPUT',event))
+        self.state_machine.handle_event(('INPUT',event),self)
 
     def draw(self):
         self.state_machine.draw()
