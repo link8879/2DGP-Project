@@ -46,7 +46,8 @@ class Run:
         current_time = get_time()
         if current_time - last_update_time > 0.3:  # 0.2초(200 밀리초)마다 로직 실행
             player.frame += 1
-            player.x += 10 - camera.x
+            player.x += 10
+            player.x -= camera.x
             last_update_time = current_time
 
 
