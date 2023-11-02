@@ -49,10 +49,6 @@ def render_world():
     update_canvas()
 
 
-open_canvas(800,600)
-init()
-
-
 def update():
     update_world()
 
@@ -65,15 +61,3 @@ def draw():
     render_world()
     update_canvas()
 
-
-while playing:
-    # image.clip_draw(8,661-33,11,32,100,100,50,80) # 달리기 처음 위치
-    #image.clip_draw(6,661-150,31-6,150-131,100,100,50,80) #달리기 준비 모션
-    #update_canvas()
-    handle_events()
-    update()
-    draw()
-    delay(0.01)
-finish()
-close_canvas()
-   #runningGround.draw()
