@@ -2,7 +2,6 @@
 from pico2d import load_image
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE
 
-
 import finish_line
 from camera import Camera
 
@@ -31,8 +30,6 @@ class Run:
     def enter(player,e):
         if player.x <= 500 or player.space_down_count >= 84:
             player.x += 10
-        else:
-            player.camera.x += 20
     @staticmethod
     def exit(player,e):
         player.frame += 1
@@ -59,7 +56,7 @@ class Run:
             player.image.clip_draw(115, 661 - 33, 21, 32, player.x, player.y + 30, 63, 96)
         elif player.frame == 6:
             player.image.clip_draw(143, 661 - 33, 15, 32, player.x, player.y + 30, 45, 96)
-            player.frame = 2
+            player.frame = 1
 
 class StateMachine:
     def __init__(self, player):
@@ -89,10 +86,9 @@ class StateMachine:
         self.cur_state.draw(self.player)
 
 class RunningPlayer:
-    def __init__(self, camera):
+    def __init__(self):
         self.x = 20
         self.y = 100
-        self.camera = camera
         self.image = load_image('player_animation.png')
         self.frame = 1
         self.action = 0

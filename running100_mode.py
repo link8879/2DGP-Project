@@ -8,6 +8,24 @@ from running_player import RunningPlayer
 from com_running_player import ComRunningPlayer
 from camera import Camera
 from finish_line import FinishLine
+import running_server100
+
+def init():
+    global playing
+    running_server100.background = RunningGround()
+    running_server100.player = RunningPlayer()
+    running_server100.com_player = ComRunningPlayer()
+    running_server100.player_finishline = FinishLine(100,100)
+    running_server100.com_finishline = FinishLine(100,100)
+
+
+    game_world.add_object(running_server100.background,0)
+    game_world.add_object(running_server100.player,1)
+    game_world.add_object(running_server100.com_player,1)
+    game_world.add_object(running_server100.com_finishline,0)
+    game_world.add_object(running_server100.player_finishline,0)
+
+    playing = True
 
 def handle_events():
     global playing
@@ -19,35 +37,15 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
         else:
-            running_player.handle_event(event)
-            com_running_player.handle_event(event)
-
-def init():
-    global runningGround
-    global running_player
-    global com_running_player
-    global camera
-    global player_finish_line
-    global com_finish_line
-
-    camera = Camera()
-    runningGround = RunningGround(camera)
-    running_player = RunningPlayer(camera)
-    com_running_player = ComRunningPlayer(camera)
-    player_finish_line = FinishLine(100,100,camera,running_player)
-    com_finish_line = FinishLine(100,100,camera,running_player)
+         #  running_sever100.player.handle_event(event)
+            running_server100.player.handle_event(event)
+            running_server100.com_player.handle_event(event)
 
 
-    game_world.add_object(runningGround,0)
-    game_world.add_object(running_player,1)
-    game_world.add_object(com_running_player,1)
-    game_world.add_object(player_finish_line,0)
-    game_world.add_object(com_finish_line,0)
-
-    playing = True
 
 def update_world():
     game_world.update()
+    delay(0.01)
 
 def render_world():
     clear_canvas()
