@@ -1,8 +1,9 @@
 #달리기 게임 플레이어
-from pico2d import load_image
+from pico2d import load_image, clamp, get_canvas_width, get_canvas_height
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE
 
 import finish_line
+import running_server100
 from camera import Camera
 
 def space_down(e):
@@ -28,8 +29,10 @@ class StartGame:
 class Run:
     @staticmethod
     def enter(player,e):
-        if player.x <= 500 or player.space_down_count >= 84:
-            player.x += 10
+        #if player.x <= 500 or player.space_down_count >= 84:
+        player.x += 10
+        player.x = clamp(0, player.x, running_server100.background.w-1)
+        player.y = clamp(0, player.y, running_server100.background.h-1)
     @staticmethod
     def exit(player,e):
         player.frame += 1
@@ -42,20 +45,22 @@ class Run:
 
     @staticmethod
     def draw(player):
+        sx, sy =  player.x - running_server100.background.window_left, player.y - running_server100.background.window_bottom
+
         # if player.frame == 0:
         #     player.image.clip_draw(8,661-33,11,32,player.x+100,player.y+50,50,90)
         if player.frame == 1:
-            player.image.clip_draw(28, 661 - 33, 12, 32, player.x, player.y + 30, 36, 96)
+            player.image.clip_draw(28, 661 - 33, 12, 32, sx, sy, 36, 96)
         elif player.frame == 2:
-            player.image.clip_draw(46, 661 - 33, 14, 32, player.x, player.y + 30, 42, 96)
+            player.image.clip_draw(46, 661 - 33, 14, 32,sx, sy, 42, 96)
         elif player.frame == 3:
-            player.image.clip_draw(62, 661 - 33, 16, 32, player.x, player.y + 30, 48, 96)
+            player.image.clip_draw(62, 661 - 33, 16, 32, sx,sy, 48, 96)
         elif player.frame == 4:
-            player.image.clip_draw(81, 661 - 33, 26, 28, player.x, player.y + 30, 78, 84)
+            player.image.clip_draw(81, 661 - 33, 26, 28, sx, sy, 78, 84)
         elif player.frame == 5:
-            player.image.clip_draw(115, 661 - 33, 21, 32, player.x, player.y + 30, 63, 96)
+            player.image.clip_draw(115, 661 - 33, 21, 32, sx, sy, 63, 96)
         elif player.frame == 6:
-            player.image.clip_draw(143, 661 - 33, 15, 32, player.x, player.y + 30, 45, 96)
+            player.image.clip_draw(143, 661 - 33, 15, 32, sx, sy, 45, 96)
             player.frame = 1
 
 class StateMachine:
@@ -88,7 +93,8 @@ class StateMachine:
 class RunningPlayer:
     def __init__(self):
         self.x = 20
-        self.y = 100
+        self.y = 130
+        #self.x, self.y = get_canvas_width() // 2, get_canvas_height() // 2
         self.image = load_image('player_animation.png')
         self.frame = 1
         self.action = 0
