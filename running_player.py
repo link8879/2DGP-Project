@@ -1,5 +1,5 @@
 #달리기 게임 플레이어
-from pico2d import load_image, clamp, get_canvas_width, get_canvas_height
+from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE
 
 import finish_line
@@ -82,9 +82,10 @@ class StateMachine:
                 elif running_server100.background.window_left >= running_server100.background.w - running_server100.background.canvas_width - 1:
                     print("스크롤이 오른쪽 끝에 도달했습니다.")
                 else:
-                    running_server100.com_player.x -= 30
+                    running_server100.com_player.x -= 10
 
                 print(player.space_down_count)
+                print(player.x)
                 return True
         return False
 
@@ -116,4 +117,10 @@ class RunningPlayer:
 
     def draw(self):
         self.state_machine.draw()
+        draw_rectangle(* self.get_bb())
 
+    def get_bb(self):
+        return self.x -13, self.y -16, self.x +13, self.y +16
+
+    def handle_collision(self, other, group):
+        pass

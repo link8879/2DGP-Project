@@ -124,3 +124,9 @@ class ComRunningPlayer:
 
     def draw(self):
         self.state_machine.draw()
+
+    def get_bb(self):
+        return self.x -13, self.y -16, self.x +13, self.y +16
+
+    def handle_collision(self, other, group):
+        pass
