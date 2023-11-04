@@ -45,7 +45,7 @@ class Run:
 
     @staticmethod
     def draw(player):
-        sx, sy =  player.x - running_server100.background.window_left, player.y - running_server100.background.window_bottom
+        sx, sy = player.x - running_server100.background.window_left, player.y - running_server100.background.window_bottom
 
         # if player.frame == 0:
         #     player.image.clip_draw(8,661-33,11,32,player.x+100,player.y+50,50,90)
@@ -77,6 +77,13 @@ class StateMachine:
                 self.cur_state = next_state
                 self.cur_state.enter(self.player,e)
                 player.space_down_count += 1
+                if running_server100.background.window_left == 0:
+                    print("스크롤이 왼쪽 끝에 도달했습니다.")
+                elif running_server100.background.window_left >= running_server100.background.w - running_server100.background.canvas_width - 1:
+                    print("스크롤이 오른쪽 끝에 도달했습니다.")
+                else:
+                    running_server100.com_player.x -= 30
+
                 print(player.space_down_count)
                 return True
         return False
@@ -94,7 +101,6 @@ class RunningPlayer:
     def __init__(self):
         self.x = 20
         self.y = 130
-        #self.x, self.y = get_canvas_width() // 2, get_canvas_height() // 2
         self.image = load_image('player_animation.png')
         self.frame = 1
         self.action = 0

@@ -2,6 +2,7 @@ from pico2d import load_image, get_time
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE
 
 import game_framework
+import running_server100
 
 PIXEL_PER_METER = (10.0/0.3)
 RUN_SPEED_KMPH = 10.0 # Km / Hour
