@@ -26,7 +26,7 @@ def init():
     running_server100.com_player = ComRunningPlayer()
     running_server100.player_finishline = FinishLine()
     running_server100.com_finishline = FinishLine()
-    hurdles = [Hurdle(i*200,86) for i in range(15)]
+    hurdles = [Hurdle(i*150 + 200,86) for i in range(15)]
 
     game_world.add_object(running_server100.background,0)
     game_world.add_object(running_server100.player,1)
@@ -37,7 +37,7 @@ def init():
     for hurdle in hurdles:
         game_world.add_object(hurdle, 0)
 
-    game_world.add_collision_pairs(running_server100.player, running_server100.player_finishline,'player:finishline')
+    game_world.add_collision_pairs(running_server100.player, hurdles,'player:hurdles')
     game_world.add_collision_pairs(running_server100.com_player, running_server100.com_finishline, 'com:finishline')
 
     # bgm = load_music('start_music.mp3')

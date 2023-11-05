@@ -1,5 +1,7 @@
 from pico2d import load_image
 
+import running_server100
+
 
 class Hurdle:
     def __init__(self,x,y):
@@ -9,7 +11,10 @@ class Hurdle:
         self.state = 0
 
     def draw(self):
-        self.image.clip_draw(0,0,75,77,self.x,self.y)
+        if self.state == 0:
+            self.image.clip_draw(0,0,75,77,self.x-running_server100.background.window_left,self.y)
+        elif self.state == 1:
+            self.image.clip_draw(76,0,75,77,self.x-running_server100.background.window_left,self.y)
         pass
 
     def get_bb(self):
@@ -19,4 +24,4 @@ class Hurdle:
         pass
 
     def handle_collision(self, other, group):
-        self.state = 0
+        self.state = 1
