@@ -1,7 +1,7 @@
 #달리기 게임 플레이어
 import time
 
-from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle
+from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE
 
 import finish_line
@@ -22,6 +22,7 @@ class StartGame:
 
     @staticmethod
     def exit(player,e):
+
         pass
 
     @staticmethod
@@ -78,7 +79,6 @@ class StateMachine:
                 self.cur_state.exit(self.player,e)
                 self.cur_state = next_state
                 self.cur_state.enter(self.player,e)
-                player.space_down_count += 1
                 if running_server100.background.window_left == 0:
                     pass
                 elif running_server100.background.window_left >= running_server100.background.w - running_server100.background.canvas_width - 1:
@@ -111,6 +111,8 @@ class RunningPlayer:
         self.state_machine.start()
         self.space_down_count = 0
         self.time = time.time()
+        self.sound = load_music('runningsound_effect.wav')
+        self.sound.set_volume(50)
 
     def update(self):
         self.state_machine.update()
@@ -120,6 +122,7 @@ class RunningPlayer:
         if current_time - self.time < 5:
             return
         self.state_machine.handle_event(('INPUT',event),self)
+        self.sound.play()
 
     def draw(self):
         self.state_machine.draw()

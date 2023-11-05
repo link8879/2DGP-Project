@@ -88,10 +88,10 @@ def update():
             a.handle_collision(b, group)
             b.handle_collision(a, group)
 
-    if running_server100.player.x > 1450 and running_server100.com_player.x < 1450:
+    if running_server100.player.x > 1440 and running_server100.com_player.x < 1440:
         game_world.clear()
         game_framework.change_mode(you_win_mode)
-    elif running_server100.player.x < 1450 and running_server100.com_player.x > 1450:
+    elif running_server100.player.x < 1440 and running_server100.com_player.x > 1440:
         game_world.clear()
         game_framework.change_mode(you_lose_mode)
 

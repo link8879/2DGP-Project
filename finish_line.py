@@ -20,4 +20,4 @@ class FinishLine:
     def update(self):
         pass
     def handle_collision(self,other, group):
-        self.state = 1
+        self.state = 0
