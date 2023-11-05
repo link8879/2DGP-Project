@@ -1,20 +1,22 @@
-from pico2d import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, load_music
+from pico2d import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_RETURN, load_music
 from sdl2 import SDLK_1
 
 import game_framework
 from pico2d import load_image, clear_canvas, update_canvas, get_events
 
 import running100_mode
+import title_mode
 
 
 def init():
     global image
     global running
     global bgm
-    image = load_image('title.png')
-    bgm = load_music('titlemusic.mp3')
+
+    image = load_image('you_win.png')
+    bgm = load_music('win_music.mp3')
     bgm.set_volume(100)
-    bgm.repeat_play()
+    bgm.play()
     running = True
 
 def finish():
@@ -36,9 +38,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
-        elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_1):
-            bgm.stop()
-            game_framework.change_mode(running100_mode)
+        elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_RETURN):
+            game_framework.change_mode(title_mode)
 
 def pause():
  pass

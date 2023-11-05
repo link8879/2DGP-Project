@@ -3,6 +3,7 @@ import game_framework
 import game_world
 import running_player
 import title_mode
+import you_win_mode
 from runningGround import RunningGround
 from running_player import RunningPlayer
 from com_running_player import ComRunningPlayer
@@ -68,6 +69,12 @@ def update():
             a.handle_collision(b, group)
             b.handle_collision(a, group)
 
+    if running_server100.player.x > 1450 and running_server100.com_player.x < 1450:
+        game_world.clear()
+        game_framework.change_mode(you_win_mode)
+    elif running_server100.player.x < 1450 and running_server100.com_player.x > 1450:
+        pass
+
 def finish():
     game_world.clear()
     pass
@@ -78,3 +85,8 @@ def draw():
     render_world()
     update_canvas()
 
+def pause():
+ pass
+
+def resume():
+ pass
