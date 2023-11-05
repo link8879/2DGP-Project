@@ -1,4 +1,6 @@
 #달리기 게임 플레이어
+import time
+
 from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE
 
@@ -78,11 +80,11 @@ class StateMachine:
                 self.cur_state.enter(self.player,e)
                 player.space_down_count += 1
                 if running_server100.background.window_left == 0:
-                    print("스크롤이 왼쪽 끝에 도달했습니다.")
+                    pass
                 elif running_server100.background.window_left >= running_server100.background.w - running_server100.background.canvas_width - 1:
-                    print("스크롤이 오른쪽 끝에 도달했습니다.")
+                    pass
                 else:
-                    running_server100.com_player.x -= 10
+                    running_server100.com_player.camera -= 50
 
                 print(player.space_down_count)
                 print(player.x)
@@ -108,11 +110,15 @@ class RunningPlayer:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.space_down_count = 0
+        self.time = time.time()
 
     def update(self):
         self.state_machine.update()
 
     def handle_event(self, event):
+        current_time = time.time()
+        if current_time - self.time < 5:
+            return
         self.state_machine.handle_event(('INPUT',event),self)
 
     def draw(self):

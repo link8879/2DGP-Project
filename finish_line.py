@@ -10,7 +10,7 @@ class FinishLine:
         self.state = 0 # 0이면 끊어지기 전
     def draw(self):
         if self.state == 0:
-            self.image.clip_draw(0,0,44,81,self.x - running_server100.background.window_left,self.y)
+            self.image.clip_draw(0,0,44,81,self.x,self.y)
         elif self.state == 1:
             self.image.clip_draw(48, 0, 44, 81, self.x - running_server100.background.window_left,self.y)
 
