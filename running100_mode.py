@@ -3,6 +3,7 @@ import game_framework
 import game_world
 import running_player
 import title_mode
+import you_lose_mode
 import you_win_mode
 from runningGround import RunningGround
 from running_player import RunningPlayer
@@ -13,6 +14,7 @@ import running_server100
 
 def init():
     global playing
+    global bgm
     running_server100.background = RunningGround()
     running_server100.player = RunningPlayer()
     running_server100.com_player = ComRunningPlayer()
@@ -27,6 +29,10 @@ def init():
 
     game_world.add_collision_pairs(running_server100.player, running_server100.player_finishline,'player:finishline')
     game_world.add_collision_pairs(running_server100.com_player, running_server100.com_finishline, 'com:finishline')
+
+    bgm = load_music('start_music.mp3')
+    bgm.set_volume(100)
+    bgm.play()
     playing = True
 
 def handle_events():
@@ -73,7 +79,9 @@ def update():
         game_world.clear()
         game_framework.change_mode(you_win_mode)
     elif running_server100.player.x < 1450 and running_server100.com_player.x > 1450:
-        pass
+        game_world.clear()
+        game_framework.change_mode(you_lose_mode)
+
 
 def finish():
     game_world.clear()
