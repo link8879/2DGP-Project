@@ -44,7 +44,7 @@ class Run:
     @staticmethod
     def enter(player,e):
         #if player.x <= 500 or player.space_down_count >= 84:
-        player.x += 10
+        player.x += 10 - player.collision
         player.x = clamp(0, player.x, running_server100.background.w-1)
         player.y = clamp(0, player.y, running_server100.background.h-1)
     @staticmethod
@@ -157,13 +157,20 @@ class HurdlePlayer:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_force = 0
-        self.is_jump = False
+        self.is_collision = False
         self.time = time.time()
+        self.collision_time = time.time()
+        self.collision = 0
         self.sound = load_music('runningsound_effect.wav')
         self.sound.set_volume(50)
 
     def update(self):
         self.state_machine.update()
+        if self.is_collision == True and time.time() - self.collision_time < 3:
+            self.collision = 4
+        else:
+            self.is_collision = False
+            self.collision = 0
 
     def handle_event(self, event):
         current_time = time.time()
@@ -180,4 +187,5 @@ class HurdlePlayer:
         return self.x -13, self.y -16, self.x +13, self.y +16
 
     def handle_collision(self, other, group):
-        pass
+        self.collision_time = time.time()
+        self.is_collision = True
