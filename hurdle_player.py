@@ -22,7 +22,7 @@ def j_down(e):
 def land(e):
     return e[0] == 'LAND'
 
-class StartGame:
+class Ready:
     @staticmethod
     def enter(player,e):
         pass
@@ -115,8 +115,8 @@ class Jump:
 class StateMachine:
     def __init__(self, player):
         self.player = player
-        self.cur_state = StartGame
-        self.transitions = {StartGame: {space_down: Run},
+        self.cur_state = Ready
+        self.transitions = {Ready: {space_down: Run},
                             Run:{space_down: Run,j_down: Jump},
                             Jump:{land: Run}}
 
@@ -147,7 +147,7 @@ class StateMachine:
     def draw(self):
         self.cur_state.draw(self.player)
 
-class HurdlePlayer:
+class HurdleRunner:
     def __init__(self):
         self.x = 20
         self.y = 130

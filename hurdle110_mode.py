@@ -5,7 +5,7 @@ import running_player
 import title_mode
 import you_lose_mode
 import you_win_mode
-from hurdle_player import HurdlePlayer
+from hurdle_player import HurdleRunner
 from runningGround import RunningGround
 from running_player import Runner
 from com_running_player import ComRunningPlayer
@@ -23,7 +23,7 @@ def init():
     global hurdles
 
     running_server100.background = RunningGround()
-    running_server100.player = HurdlePlayer()
+    running_server100.player = HurdleRunner()
     running_server100.com_player = ComRunningPlayer()
     running_server100.player_finishline = FinishLine()
     running_server100.com_finishline = FinishLine()

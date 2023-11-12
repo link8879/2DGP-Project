@@ -23,7 +23,7 @@ from camera import Camera
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
-class StartGame:
+class Ready:
     @staticmethod
     def enter(player,e):
         pass
@@ -61,7 +61,7 @@ class Run:
         FRAMES_PER_ACTION = 6
 
         if TIME_PER_ACTION <= 0.25:
-            TIME_PER_ACTION += 0.01
+            TIME_PER_ACTION += 0.05
     @staticmethod
     def exit(player,e):
         pass
@@ -76,7 +76,7 @@ class Run:
             pass
 
         if TIME_PER_ACTION <= 0.5:
-            TIME_PER_ACTION += 0.001
+            TIME_PER_ACTION += 0.005
 
         ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
         FRAMES_PER_ACTION = 6
@@ -107,8 +107,8 @@ class Run:
 class StateMachine:
     def __init__(self, player):
         self.player = player
-        self.cur_state = StartGame
-        self.transitions = {StartGame: {space_down: Run},
+        self.cur_state = Ready
+        self.transitions = {Ready: {space_down: Run},
                             Run:{space_down: Run}}
 
     def handle_event(self, e,player):
