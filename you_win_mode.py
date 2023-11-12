@@ -1,12 +1,10 @@
 import time
 
 from pico2d import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_RETURN, load_music, load_font
-from sdl2 import SDLK_1
 
 import game_framework
 from pico2d import load_image, clear_canvas, update_canvas, get_events
 
-import running100_mode
 import running_server100
 import title_mode
 

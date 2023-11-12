@@ -1,5 +1,7 @@
 #달리기 게임 플레이어
 import game_framework
+import game_world
+import you_win_mode
 
 PIXEL_PER_METER = (10.0/0.3)
 RUN_SPEED_KMPH = 0.0 # Km / Hour
@@ -85,8 +87,6 @@ class Run:
 
         player.x += pps * game_framework.frame_time
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
-        print(pps)
-
 
     @staticmethod
     def draw(player):
@@ -167,7 +167,10 @@ class Runner:
     def get_bb(self):
         return self.x -13, self.y -16, self.x +13, self.y +16
 
-    def handle_collision(self, other, group):
+    def handle_collision(self, group, other):
+        if group == 'player:finishline':
+            game_world.clear()
+            game_framework.change_mode(you_win_mode)
         pass
 
     def change_velocity_to_pps(self):

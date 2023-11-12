@@ -1,17 +1,12 @@
 from pico2d import *
 import game_framework
 import game_world
-import running_player
 import title_mode
-import you_lose_mode
-import you_win_mode
 from runningGround import RunningGround
 from running_player import Runner
 from com_running_player import ComRunningPlayer
-from camera import Camera
 from finish_line import FinishLine
 import running_server100
-import time
 
 def init():
     global playing
@@ -32,8 +27,11 @@ def init():
     game_world.add_object(running_server100.com_finishline,0)
     game_world.add_object(running_server100.player_finishline,0)
 
-    game_world.add_collision_pairs(running_server100.player, running_server100.player_finishline,'player:finishline')
-    game_world.add_collision_pairs(running_server100.com_player, running_server100.com_finishline, 'com:finishline')
+    game_world.add_collision_pair('player:finishline',running_server100.player, None)
+    game_world.add_collision_pair('player:finishline',None,running_server100.player_finishline)
+
+    game_world.add_collision_pair('com_player:finishline', running_server100.com_player, None)
+    game_world.add_collision_pair('com_player:finishline', None, running_server100.com_finishline)
 
     bgm = load_music('start_music.mp3')
     bgm.set_volume(100)
@@ -65,17 +63,6 @@ def render_world():
     game_world.render()
     update_canvas()
 
-def collide(a, b):
-    left_a, bottom_a, right_a, top_a = a.get_bb()
-    left_b, bottom_b, right_b, top_b = b.get_bb()
-
-    if left_a > right_b: return False
-    if right_a < left_b: return False
-    if top_a < bottom_b: return False
-    if bottom_a > top_b: return False
-
-    return True
-
 def update():
     global bgm
     global is_played
@@ -83,17 +70,13 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
-    for a, b, group in game_world.all_collision_pairs():
-        if collide(a, b):
-            a.handle_collision(b, group)
-            b.handle_collision(a, group)
-
-    if running_server100.player.x > 1440 and running_server100.com_player.x < 1440:
-        game_world.clear()
-        game_framework.change_mode(you_win_mode)
-    elif running_server100.player.x < 1440 and running_server100.com_player.x > 1440:
-        game_world.clear()
-        game_framework.change_mode(you_lose_mode)
+    game_world.handle_collisions()
+    # if running_server100.player.x > 1440 and running_server100.com_player.x < 1440:
+    #     game_world.clear()
+    #     game_framework.change_mode(you_win_mode)
+    # elif running_server100.player.x < 1440 and running_server100.com_player.x > 1440:
+    #     game_world.clear()
+    #     game_framework.change_mode(you_lose_mode)
 
     current_time = get_time()
 

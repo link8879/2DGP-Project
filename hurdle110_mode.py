@@ -1,13 +1,11 @@
 from pico2d import *
 import game_framework
 import game_world
-import running_player
 import title_mode
 import you_lose_mode
 import you_win_mode
 from hurdle_player import HurdleRunner
 from runningGround import RunningGround
-from running_player import Runner
 from com_running_player import ComRunningPlayer
 from camera import Camera
 from finish_line import FinishLine
@@ -71,28 +69,12 @@ def render_world():
     game_world.render()
     update_canvas()
 
-def collide(a, b):
-    left_a, bottom_a, right_a, top_a = a.get_bb()
-    left_b, bottom_b, right_b, top_b = b.get_bb()
-
-    if left_a > right_b: return False
-    if right_a < left_b: return False
-    if top_a < bottom_b: return False
-    if bottom_a > top_b: return False
-
-    return True
-
 def update():
     global bgm
     global is_played
 
     for game_object in game_world.all_objects():
         game_object.update()
-
-    for a, b, group in game_world.all_collision_pairs():
-        if collide(a, b):
-            a.handle_collision(b, group)
-            b.handle_collision(a, group)
 
     if running_server100.player.x > 1440 and running_server100.com_player.x < 1440:
         game_world.clear()
