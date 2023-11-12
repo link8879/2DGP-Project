@@ -159,7 +159,6 @@ class HurdleRunner:
         self.jump_force = 0
         self.is_collision = False
         self.time = time.time()
-        self.collision_time = time.time()
         self.collision = 0
         self.sound = load_music('runningsound_effect.wav')
         self.sound.set_volume(50)
@@ -184,8 +183,8 @@ class HurdleRunner:
         draw_rectangle(* self.get_bb())
 
     def get_bb(self):
-        return self.x -13, self.y -16, self.x +13, self.y +16
+        return self.x -15, self.y -50, self.x +15, self.y +50
 
-    def handle_collision(self, other, group):
-        self.collision_time = time.time()
-        self.is_collision = True
+    def handle_collision(self, group, other):
+        pass
+

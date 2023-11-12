@@ -7,8 +7,8 @@ import you_win_mode
 from hurdle_player import HurdleRunner
 from runningGround import RunningGround
 from com_running_player import ComRunningPlayer
-from camera import Camera
 from finish_line import FinishLine
+from com_finish_line import ComFinishLine
 import running_server100
 from hurdle import Hurdle
 
@@ -24,7 +24,7 @@ def init():
     running_server100.player = HurdleRunner()
     running_server100.com_player = ComRunningPlayer()
     running_server100.player_finishline = FinishLine()
-    running_server100.com_finishline = FinishLine()
+    running_server100.com_finishline = ComFinishLine()
     hurdles = [Hurdle(i*200 + 200,86) for i in range(14)]
 
     game_world.add_object(running_server100.background,0)
@@ -36,8 +36,12 @@ def init():
     for hurdle in hurdles:
         game_world.add_object(hurdle, 0)
 
-    game_world.add_collision_pairs(running_server100.player, hurdles,'player:hurdles')
-    game_world.add_collision_pairs(running_server100.com_player, running_server100.com_finishline, 'com:finishline')
+    # game_world.add_collision_pairs(running_server100.player, hurdles,'player:hurdles')
+    # game_world.add_collision_pairs(running_server100.com_player, running_server100.com_finishline, 'com:finishline')
+
+    game_world.add_collision_pair('player:hurdles',running_server100.player,None)
+    for hurdle in hurdles:
+        game_world.add_collision_pair('player:hurdles',None,hurdle)
 
     # bgm = load_music('start_music.mp3')
     # bgm.set_volume(100)
@@ -59,7 +63,6 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
         else:
-         #  running_sever100.player.handle_event(event)
             running_server100.player.handle_event(event)
             running_server100.com_player.handle_event(event)
 
@@ -76,12 +79,7 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
-    if running_server100.player.x > 1440 and running_server100.com_player.x < 1440:
-        game_world.clear()
-        game_framework.change_mode(you_win_mode)
-    elif running_server100.player.x < 1440 and running_server100.com_player.x > 1440:
-        game_world.clear()
-        game_framework.change_mode(you_lose_mode)
+    game_world.handle_collisions()
 
     current_time = get_time()
 

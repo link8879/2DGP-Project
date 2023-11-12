@@ -23,5 +23,6 @@ class Hurdle:
     def update(self):
         pass
 
-    def handle_collision(self, other, group):
-        self.state = 1
+    def handle_collision(self, group,other):
+        if group == 'player:hurdles':
+            self.state = 1
