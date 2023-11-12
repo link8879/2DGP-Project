@@ -1,11 +1,13 @@
-from pico2d import load_image, get_time
+from pico2d import load_image, get_time, draw_rectangle
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE
 
 import game_framework
+import game_world
 import running_server100
+import you_lose_mode
 
 PIXEL_PER_METER = (10.0/0.3)
-RUN_SPEED_KMPH = 4.0 # Km / Hour
+RUN_SPEED_KMPH = 100.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -124,9 +126,13 @@ class ComRunningPlayer:
 
     def draw(self):
         self.state_machine.draw()
+        draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        return self.x -13, self.y -16, self.x +13, self.y +16
+        return self.x -15, self.y -50, self.x +15, self.y +50
 
-    def handle_collision(self, other, group):
-        pass
+    def handle_collision(self, group, other):
+        if group == 'com_player:finishline':
+            print('col')
+            game_world.clear()
+            game_framework.change_mode(you_lose_mode)

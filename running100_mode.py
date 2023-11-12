@@ -6,6 +6,7 @@ from runningGround import RunningGround
 from running_player import Runner
 from com_running_player import ComRunningPlayer
 from finish_line import FinishLine
+from com_finish_line import ComFinishLine
 import running_server100
 
 def init():
@@ -19,7 +20,7 @@ def init():
     running_server100.player = Runner()
     running_server100.com_player = ComRunningPlayer()
     running_server100.player_finishline = FinishLine()
-    running_server100.com_finishline = FinishLine()
+    running_server100.com_finishline = ComFinishLine()
 
     game_world.add_object(running_server100.background,0)
     game_world.add_object(running_server100.player,1)

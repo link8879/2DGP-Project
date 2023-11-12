@@ -165,13 +165,13 @@ class Runner:
         draw_rectangle(* self.get_bb())
 
     def get_bb(self):
-        return self.x -13, self.y -16, self.x +13, self.y +16
+        return self.x -15, self.y -50, self.x +15, self.y +50
 
     def handle_collision(self, group, other):
         if group == 'player:finishline':
             game_world.clear()
             game_framework.change_mode(you_win_mode)
-        pass
+
 
     def change_velocity_to_pps(self):
         PIXEL_PER_METER = (10.0 / 0.3)

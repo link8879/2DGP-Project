@@ -3,9 +3,9 @@ from pico2d import load_image, draw_rectangle
 import running_server100
 
 
-class FinishLine:
+class ComFinishLine:
     def __init__(self):
-        self.x, self.y = 1480,88
+        self.x, self.y = 1480,230
         self.image = load_image('finish_line.png')
         self.state = 0 # 0이면 끊어지기 전
     def draw(self):
