@@ -44,27 +44,23 @@ class Run:
     @staticmethod
     def do(player):
         pass
-        #player.frame = (player.frame + 1) % 8
+        #player.frame = (player.frame + 1) % 5
 
     @staticmethod
     def draw(player):
         sx, sy = player.x - running_server100.background.window_left, player.y - running_server100.background.window_bottom
-
-        # if player.frame == 0:
-        #     player.image.clip_draw(8,661-33,11,32,player.x+100,player.y+50,50,90)
-        if player.frame == 1:
+        if player.frame == 0:
             player.image.clip_draw(28, 661 - 33, 12, 32, sx, sy, 36, 96)
-        elif player.frame == 2:
+        elif player.frame == 1:
             player.image.clip_draw(46, 661 - 33, 14, 32,sx, sy, 42, 96)
-        elif player.frame == 3:
+        elif player.frame == 2:
             player.image.clip_draw(62, 661 - 33, 16, 32, sx,sy, 48, 96)
-        elif player.frame == 4:
+        elif player.frame == 3:
             player.image.clip_draw(81, 661 - 33, 26, 28, sx, sy, 78, 84)
-        elif player.frame == 5:
+        elif player.frame == 4:
             player.image.clip_draw(115, 661 - 33, 21, 32, sx, sy, 63, 96)
-        elif player.frame == 6:
+        elif player.frame == 5:
             player.image.clip_draw(143, 661 - 33, 15, 32, sx, sy, 45, 96)
-            player.frame = 1
 
 class StateMachine:
     def __init__(self, player):
