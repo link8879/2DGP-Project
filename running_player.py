@@ -1,4 +1,16 @@
 #달리기 게임 플레이어
+import game_framework
+
+PIXEL_PER_METER = (10.0/0.3)
+RUN_SPEED_KMPH = 0.0 # Km / Hour
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 6
+
 import time
 
 from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music
@@ -30,36 +42,66 @@ class StartGame:
         player.image.clip_draw(6,661-150,31-6,150-131,30,100,75,57)
 
 class Run:
+    time_elapsed = 0
     @staticmethod
     def enter(player,e):
-        #if player.x <= 500 or player.space_down_count >= 84:
-        player.x += 10
+        global TIME_PER_ACTION
+        global ACTION_PER_TIME
+        global FRAMES_PER_ACTION
+        global pps
+
+        player.velocity += 0.5
+        pps = player.change_velocity_to_pps()
+
         player.x = clamp(0, player.x, running_server100.background.w-1)
         player.y = clamp(0, player.y, running_server100.background.h-1)
+
+        TIME_PER_ACTION -= 0.01
+        ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+        FRAMES_PER_ACTION = 6
+
+        if TIME_PER_ACTION <= 0.25:
+            TIME_PER_ACTION += 0.01
     @staticmethod
     def exit(player,e):
-        player.frame += 1
         pass
 
     @staticmethod
     def do(player):
-        pass
-        #player.frame = (player.frame + 1) % 5
+        global pps
+        global TIME_PER_ACTION
+        if pps >= 0.0:
+            player.velocity -= 0.01
+        else:
+            pass
+
+        if TIME_PER_ACTION <= 0.5:
+            TIME_PER_ACTION += 0.001
+
+        ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+        FRAMES_PER_ACTION = 6
+
+        pps = player.change_velocity_to_pps()
+
+        player.x += pps * game_framework.frame_time
+        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
+        print(pps)
+
 
     @staticmethod
     def draw(player):
         sx, sy = player.x - running_server100.background.window_left, player.y - running_server100.background.window_bottom
-        if player.frame == 0:
+        if int(player.frame) == 0:
             player.image.clip_draw(28, 661 - 33, 12, 32, sx, sy, 36, 96)
-        elif player.frame == 1:
+        elif int(player.frame) == 1:
             player.image.clip_draw(46, 661 - 33, 14, 32,sx, sy, 42, 96)
-        elif player.frame == 2:
+        elif int(player.frame) == 2:
             player.image.clip_draw(62, 661 - 33, 16, 32, sx,sy, 48, 96)
-        elif player.frame == 3:
+        elif int(player.frame) == 3:
             player.image.clip_draw(81, 661 - 33, 26, 28, sx, sy, 78, 84)
-        elif player.frame == 4:
+        elif int(player.frame) == 4:
             player.image.clip_draw(115, 661 - 33, 21, 32, sx, sy, 63, 96)
-        elif player.frame == 5:
+        elif int(player.frame) == 5:
             player.image.clip_draw(143, 661 - 33, 15, 32, sx, sy, 45, 96)
 
 class StateMachine:
@@ -81,9 +123,6 @@ class StateMachine:
                     pass
                 else:
                     running_server100.com_player.camera -= 50
-
-                print(player.space_down_count)
-                print(player.x)
                 return True
         return False
 
@@ -96,13 +135,14 @@ class StateMachine:
     def draw(self):
         self.cur_state.draw(self.player)
 
-class RunningPlayer:
+class Runner:
     def __init__(self):
         self.x = 20
         self.y = 130
         self.image = load_image('player_animation.png')
         self.frame = 1
         self.action = 0
+        self.velocity = 4.0
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.space_down_count = 0
@@ -129,3 +169,10 @@ class RunningPlayer:
 
     def handle_collision(self, other, group):
         pass
+
+    def change_velocity_to_pps(self):
+        PIXEL_PER_METER = (10.0 / 0.3)
+        RUN_SPEED_MPM = (self.velocity * 1000.0 / 60.0)
+        RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+        RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+        return RUN_SPEED_PPS

@@ -6,7 +6,7 @@ import title_mode
 import you_lose_mode
 import you_win_mode
 from runningGround import RunningGround
-from running_player import RunningPlayer
+from running_player import Runner
 from com_running_player import ComRunningPlayer
 from camera import Camera
 from finish_line import FinishLine
@@ -21,7 +21,7 @@ def init():
     global start_time
 
     running_server100.background = RunningGround()
-    running_server100.player = RunningPlayer()
+    running_server100.player = Runner()
     running_server100.com_player = ComRunningPlayer()
     running_server100.player_finishline = FinishLine()
     running_server100.com_finishline = FinishLine()

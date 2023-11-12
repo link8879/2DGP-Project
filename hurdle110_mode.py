@@ -7,7 +7,7 @@ import you_lose_mode
 import you_win_mode
 from hurdle_player import HurdlePlayer
 from runningGround import RunningGround
-from running_player import RunningPlayer
+from running_player import Runner
 from com_running_player import ComRunningPlayer
 from camera import Camera
 from finish_line import FinishLine
