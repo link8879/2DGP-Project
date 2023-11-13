@@ -58,12 +58,12 @@ class Run:
         player.x = clamp(0, player.x, running_server100.background.w-1)
         player.y = clamp(0, player.y, running_server100.background.h-1)
 
-        TIME_PER_ACTION -= 0.01
+        TIME_PER_ACTION -= 0.1
         ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
         FRAMES_PER_ACTION = 6
 
         if TIME_PER_ACTION <= 0.25:
-            TIME_PER_ACTION += 0.05
+            TIME_PER_ACTION = 0.25
     @staticmethod
     def exit(player,e):
         pass
@@ -72,13 +72,13 @@ class Run:
     def do(player):
         global pps
         global TIME_PER_ACTION
-        if pps >= 0.0:
+        if pps >= 0.01:
             player.velocity -= 0.01
         else:
             pass
 
-        if TIME_PER_ACTION <= 0.5:
-            TIME_PER_ACTION += 0.005
+
+        TIME_PER_ACTION += 0.001
 
         ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
         FRAMES_PER_ACTION = 6

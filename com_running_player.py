@@ -43,8 +43,6 @@ class StartGame:
     def draw(player):
         player.image.clip_draw(6, 661 - 150, 31 - 6, 150 - 131, 20, 250, 75, 57)
 
-last_update_time = 0
-
 class Run:
     @staticmethod
     def enter(player,e):

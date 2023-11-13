@@ -2,11 +2,9 @@ from pico2d import *
 import game_framework
 import game_world
 import title_mode
-import you_lose_mode
-import you_win_mode
 from hurdle_player import HurdleRunner
 from runningGround import RunningGround
-from com_running_player import ComRunningPlayer
+from com_hurdle_player import ComHurdleRunner
 from finish_line import FinishLine
 from com_finish_line import ComFinishLine
 import running_server100
@@ -22,10 +20,11 @@ def init():
 
     running_server100.background = RunningGround()
     running_server100.player = HurdleRunner()
-    running_server100.com_player = ComRunningPlayer()
+    running_server100.com_player = ComHurdleRunner()
     running_server100.player_finishline = FinishLine()
     running_server100.com_finishline = ComFinishLine()
     hurdles = [Hurdle(i*300 + 300,86) for i in range(4)]
+    com_hurdles = [Hurdle(i*300 + 300, 228) for i in range(4)]
 
     game_world.add_object(running_server100.background,0)
     game_world.add_object(running_server100.player,1)
@@ -36,8 +35,12 @@ def init():
     for hurdle in hurdles:
         game_world.add_object(hurdle, 0)
 
-    # game_world.add_collision_pairs(running_server100.player, hurdles,'player:hurdles')
-    # game_world.add_collision_pairs(running_server100.com_player, running_server100.com_finishline, 'com:finishline')
+    for com_hurdle in com_hurdles:
+        game_world.add_object(com_hurdle, 0)
+
+    game_world.add_collision_pair('com_player:hurdles',running_server100.com_player,None)
+    for com_hurdle in com_hurdles:
+        game_world.add_collision_pair('com_player:hurdles',None,com_hurdle)
 
     game_world.add_collision_pair('player:hurdles',running_server100.player,None)
     for hurdle in hurdles:
