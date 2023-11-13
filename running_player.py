@@ -52,7 +52,7 @@ class Run:
         global FRAMES_PER_ACTION
         global pps
 
-        player.velocity += 0.5
+        player.velocity += 1.0
         pps = player.change_velocity_to_pps()
 
         player.x = clamp(0, player.x, running_server100.background.w-1)

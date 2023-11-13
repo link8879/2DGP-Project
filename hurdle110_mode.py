@@ -25,7 +25,7 @@ def init():
     running_server100.com_player = ComRunningPlayer()
     running_server100.player_finishline = FinishLine()
     running_server100.com_finishline = ComFinishLine()
-    hurdles = [Hurdle(i*200 + 200,86) for i in range(14)]
+    hurdles = [Hurdle(i*300 + 300,86) for i in range(4)]
 
     game_world.add_object(running_server100.background,0)
     game_world.add_object(running_server100.player,1)

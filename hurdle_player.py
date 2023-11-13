@@ -14,7 +14,9 @@ RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 6
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 def j_down(e):
@@ -41,41 +43,66 @@ class Ready:
         player.image.clip_draw(6,661-150,31-6,150-131,30,100,75,57)
 
 class Run:
+    time_elapsed = 0
     @staticmethod
     def enter(player,e):
-        #if player.x <= 500 or player.space_down_count >= 84:
-        player.x += 10 - player.collision
+        global TIME_PER_ACTION
+        global ACTION_PER_TIME
+        global FRAMES_PER_ACTION
+        global pps
+
+        player.velocity += 1.0
+        pps = player.change_velocity_to_pps()
+
         player.x = clamp(0, player.x, running_server100.background.w-1)
         player.y = clamp(0, player.y, running_server100.background.h-1)
+
+        TIME_PER_ACTION -= 0.1
+        ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+        FRAMES_PER_ACTION = 6
+
+        if TIME_PER_ACTION <= 0.25:
+            TIME_PER_ACTION = 0.25
     @staticmethod
     def exit(player,e):
-        player.frame += 1
         pass
 
     @staticmethod
     def do(player):
-        pass
-        #player.frame = (player.frame + 1) % 8
+        global pps
+        global TIME_PER_ACTION
+        if pps >= 0.01:
+            player.velocity -= 0.01
+        else:
+            pass
+
+
+        TIME_PER_ACTION += 0.001
+
+        ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+        FRAMES_PER_ACTION = 6
+
+        pps = player.change_velocity_to_pps()
+        print(pps)
+        player.x += pps * game_framework.frame_time
+        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
 
     @staticmethod
     def draw(player):
         sx, sy = player.x - running_server100.background.window_left, player.y - running_server100.background.window_bottom
-
-        # if player.frame == 0:
-        #     player.image.clip_draw(8,661-33,11,32,player.x+100,player.y+50,50,90)
-        if player.frame == 1:
+        if int(player.frame) == 0:
             player.image.clip_draw(28, 661 - 33, 12, 32, sx, sy, 36, 96)
-        elif player.frame == 2:
+        elif int(player.frame) == 1:
             player.image.clip_draw(46, 661 - 33, 14, 32,sx, sy, 42, 96)
-        elif player.frame == 3:
+        elif int(player.frame) == 2:
             player.image.clip_draw(62, 661 - 33, 16, 32, sx,sy, 48, 96)
-        elif player.frame == 4:
+        elif int(player.frame) == 3:
             player.image.clip_draw(81, 661 - 33, 26, 28, sx, sy, 78, 84)
-        elif player.frame == 5:
+        elif int(player.frame) == 4:
             player.image.clip_draw(115, 661 - 33, 21, 32, sx, sy, 63, 96)
-        elif player.frame == 6:
+        elif int(player.frame) == 5:
             player.image.clip_draw(143, 661 - 33, 15, 32, sx, sy, 45, 96)
-            player.frame = 1
+
 
 class Jump:
     @staticmethod
@@ -84,20 +111,21 @@ class Jump:
             #player.x += 10
             player.x = clamp(0, player.x, running_server100.background.w-1)
             player.y = clamp(0, player.y, running_server100.background.h-1)
-            player.jump_force = 120
-            # player.is_jump = True
+            player.jump_force = 150
+            player.is_jumping = True
     @staticmethod
     def exit(player,e):
-        # player.is_jump = False
+        player.is_jumping = False
         pass
 
     @staticmethod
     def do(player):
+        global pps
         player.y += player.jump_force * game_framework.frame_time
         player.jump_force -= 200 * game_framework.frame_time
 
         # 점프 중 수평 운동
-        player.x += 100 * game_framework.frame_time
+        player.x += pps * game_framework.frame_time
         # 이동 범위 제한
         player.x = clamp(0, player.x, running_server100.background.w - 1)
         player.y = clamp(0, player.y, running_server100.background.h - 1)
@@ -108,8 +136,6 @@ class Jump:
     @staticmethod
     def draw(player):
         sx, sy = player.x - running_server100.background.window_left, player.y - running_server100.background.window_bottom
-        # if player.frame == 0:
-        #     player.image.clip_draw(8,661-33,11,32,player.x+100,player.y+50,50,90)
         player.image.clip_draw(191, 661 - 72, 31, 19, sx, sy, 93, 57)
 
 class StateMachine:
@@ -154,22 +180,18 @@ class HurdleRunner:
         self.image = load_image('player_animation.png')
         self.frame = 1
         self.action = 0
+        self.velocity = 4.0
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_force = 0
-        self.is_collision = False
+        self.is_jumping = False
         self.time = time.time()
-        self.collision = 0
+        self.collision = False
         self.sound = load_music('runningsound_effect.wav')
         self.sound.set_volume(50)
 
     def update(self):
         self.state_machine.update()
-        if self.is_collision == True and time.time() - self.collision_time < 3:
-            self.collision = 4
-        else:
-            self.is_collision = False
-            self.collision = 0
 
     def handle_event(self, event):
         current_time = time.time()
@@ -183,8 +205,23 @@ class HurdleRunner:
         draw_rectangle(* self.get_bb())
 
     def get_bb(self):
-        return self.x -15, self.y -50, self.x +15, self.y +50
+        if self.is_jumping:
+            return self.x - 45, self.y - 30, self.x + 45, self.y + 30
+        else:
+            return self.x -15, self.y -50, self.x +15, self.y +50
 
     def handle_collision(self, group, other):
-        pass
+        if group == 'player:hurdles':
+            if not self.collision:
+                self.velocity -= 0.5
+                print('col')
+            self.collision = True
 
+
+
+    def change_velocity_to_pps(self):
+        PIXEL_PER_METER = (10.0 / 0.3)
+        RUN_SPEED_MPM = (self.velocity * 1000.0 / 60.0)
+        RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+        RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+        return RUN_SPEED_PPS
