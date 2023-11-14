@@ -5,7 +5,10 @@ from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_
 
 import finish_line
 import game_framework
+import game_world
 import running_server100
+import you_lose_mode
+import you_win_mode
 from camera import Camera
 
 PIXEL_PER_METER = (10.0/0.3)
@@ -196,6 +199,9 @@ class ComHurdleRunner:
     def handle_collision(self, group, other):
         if group == 'com_player:hurdles':
              self.state_machine.handle_event(('JUMP',0j))
+        elif group == 'com_player:finishline':
+            game_world.clear()
+            game_framework.change_mode(you_lose_mode)
 
 
 

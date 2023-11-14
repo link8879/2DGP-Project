@@ -5,7 +5,9 @@ from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_
 
 import finish_line
 import game_framework
+import game_world
 import running_server100
+import you_win_mode
 from camera import Camera
 
 PIXEL_PER_METER = (10.0/0.3)
@@ -214,8 +216,11 @@ class HurdleRunner:
         if group == 'player:hurdles':
             if not self.collision:
                 self.velocity -= 0.5
-                print('col')
+
             self.collision = True
+        elif group == 'player:finishline':
+            game_world.clear()
+            game_framework.change_mode(you_win_mode)
 
 
 

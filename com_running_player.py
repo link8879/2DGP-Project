@@ -131,6 +131,5 @@ class ComRunningPlayer:
 
     def handle_collision(self, group, other):
         if group == 'com_player:finishline':
-            print('col')
             game_world.clear()
             game_framework.change_mode(you_lose_mode)

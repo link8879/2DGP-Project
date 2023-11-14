@@ -46,6 +46,12 @@ def init():
     for hurdle in hurdles:
         game_world.add_collision_pair('player:hurdles',None,hurdle)
 
+    game_world.add_collision_pair('player:finishline', running_server100.player, None)
+    game_world.add_collision_pair('player:finishline', None, running_server100.player_finishline)
+
+    game_world.add_collision_pair('com_player:finishline', running_server100.com_player, None)
+    game_world.add_collision_pair('com_player:finishline', None, running_server100.com_finishline)
+
     # bgm = load_music('start_music.mp3')
     # bgm.set_volume(100)
     # bgm.play()
