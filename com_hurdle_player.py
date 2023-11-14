@@ -12,7 +12,7 @@ import you_win_mode
 from camera import Camera
 
 PIXEL_PER_METER = (10.0/0.3)
-RUN_SPEED_KMPH = 4.0 # Km / Hour
+RUN_SPEED_KMPH = 10.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -173,7 +173,7 @@ class ComHurdleRunner:
         self.image = load_image('complayer_animation.png')
         self.frame = 1
         self.action = 0
-        self.velocity = 8.0
+        self.velocity = 10.0
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_force = 0
@@ -198,13 +198,10 @@ class ComHurdleRunner:
 
     def handle_collision(self, group, other):
         if group == 'com_player:hurdles':
-             self.state_machine.handle_event(('JUMP',0j))
+             self.state_machine.handle_event(('JUMP',0))
         elif group == 'com_player:finishline':
             game_world.clear()
             game_framework.change_mode(you_lose_mode)
-
-
-
 
     def change_velocity_to_pps(self):
         PIXEL_PER_METER = (10.0 / 0.3)

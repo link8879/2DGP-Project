@@ -214,10 +214,7 @@ class HurdleRunner:
 
     def handle_collision(self, group, other):
         if group == 'player:hurdles':
-            if not self.collision:
-                self.velocity -= 0.5
-
-            self.collision = True
+            self.velocity -=0.05
         elif group == 'player:finishline':
             game_world.clear()
             game_framework.change_mode(you_win_mode)
