@@ -204,7 +204,7 @@ class HurdleRunner:
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(* self.get_bb())
+        #draw_rectangle(* self.get_bb())
 
     def get_bb(self):
         if self.is_jumping:
@@ -216,7 +216,6 @@ class HurdleRunner:
         if group == 'player:hurdles':
             self.velocity -=0.05
         elif group == 'player:finishline':
-            game_world.clear()
             game_framework.change_mode(you_win_mode)
 
 

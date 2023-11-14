@@ -6,7 +6,7 @@ import title_mode
 import you_win_mode
 
 open_canvas(800,600)
-game_framework.run(hurdle110_mode) #테스트 타임 줄이기 위함
+game_framework.run(title_mode) #테스트 타임 줄이기 위함
 close_canvas()
 # open_canvas(800,600)
 # title_mode.init()

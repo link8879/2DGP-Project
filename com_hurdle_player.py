@@ -188,7 +188,7 @@ class ComHurdleRunner:
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(* self.get_bb())
+        #draw_rectangle(* self.get_bb())
 
     def get_bb(self):
         if self.is_jumping:
@@ -200,7 +200,6 @@ class ComHurdleRunner:
         if group == 'com_player:hurdles':
              self.state_machine.handle_event(('JUMP',0))
         elif group == 'com_player:finishline':
-            game_world.clear()
             game_framework.change_mode(you_lose_mode)
 
     def change_velocity_to_pps(self):
@@ -209,3 +208,5 @@ class ComHurdleRunner:
         RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
         RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
         return RUN_SPEED_PPS
+
+

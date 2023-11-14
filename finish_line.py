@@ -14,7 +14,7 @@ class FinishLine:
         elif self.state == 1:
             self.image.clip_draw(48, 0, 44, 81, self.x - running_server100.background.window_left,self.y)
 
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
     def get_bb(self):
         return self.x -22, self.y - 40.5, self.x + 22, self.y + 40.5
     def update(self):

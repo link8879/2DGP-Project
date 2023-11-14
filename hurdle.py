@@ -15,7 +15,7 @@ class Hurdle:
             self.image.clip_draw(0,0,75,77,self.x-running_server100.background.window_left,self.y)
         elif self.state == 1:
             self.image.clip_draw(76,0,75,77,self.x-running_server100.background.window_left,self.y)
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         return self.x - 36.5, self.y - 37.5, self.x + 10, self.y + 37.5

@@ -34,6 +34,10 @@ def init():
     game_world.add_collision_pair('com_player:finishline', running_server100.com_player, None)
     game_world.add_collision_pair('com_player:finishline', None, running_server100.com_finishline)
 
+
+    print(running_server100.player.x)
+    print(running_server100.com_player.x)
+
     bgm = load_music('start_music.mp3')
     bgm.set_volume(100)
     bgm.play()

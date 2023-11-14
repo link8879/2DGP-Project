@@ -1,26 +1,28 @@
 #게임월드 모듈
 
-world = [[],[]]
+objects = [[],[]]
 collision_pairs = {}
 
 def add_object(o, depth = 0):
-    world[depth].append(o)
+    objects[depth].append(o)
 
 # 게임월드 객체들을 몽땅 업데이트
 def update():
-    for layer in world:
+    for layer in objects:
         for o in layer:
             o.update()
 
 # 게임 월드의 객체들을 몽땅 그리기
 def render():
-    for layer in world:
+    for layer in objects:
         for o in layer:
             o.draw()
 
 def clear():
-    for layer in world:
+    for layer in objects:
         layer.clear()
+
+    collision_pairs.clear()
 
 
 def add_collision_pair(group,a,b):
@@ -33,10 +35,10 @@ def add_collision_pair(group,a,b):
 
 
 def handle_collisions():
-    for group, pairs in collision_pairs.items():
+    for group, pairs in list(collision_pairs.items()):
         for a in pairs[0]:
             for b in pairs[1]:
-                if collide(a,b):
+                if collide(a, b):
                     a.handle_collision(group, b)
                     b.handle_collision(group, a)
 
@@ -54,6 +56,6 @@ def collide(a, b):
 
 
 def all_objects():
-    for layer in world:
+    for layer in objects:
         for o in layer:
             yield o
