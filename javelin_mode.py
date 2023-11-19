@@ -5,7 +5,7 @@ import title_mode
 from javelin_ground import JavelinGround
 from javelin_player import Thrower
 #from com_javelin_player import ComThrower
-import running_server100
+import javelin_server
 
 def init():
     global playing
@@ -14,17 +14,12 @@ def init():
     global is_played
     global start_time
 
-    running_server100.background = JavelinGround
-    running_server100.player = Thrower()
-    #running_server100.com_player = ComThrower()
+    javelin_server.background = JavelinGround()
+    javelin_server.player = Thrower()
 
 
-    game_world.add_object(running_server100.background,0)
-    game_world.add_object(running_server100.player,1)
-    #game_world.add_object(running_server100.com_player,1)
-
-    print(running_server100.player.x)
-    print(running_server100.com_player.x)
+    game_world.add_object(javelin_server.background,0)
+    game_world.add_object(javelin_server.player,1)
 
     bgm = load_music('start_music.mp3')
     bgm.set_volume(100)
@@ -46,9 +41,8 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
         else:
-         #  running_sever100.player.handle_event(event)
-            running_server100.player.handle_event(event)
-            running_server100.com_player.handle_event(event)
+            javelin_server.player.handle_event(event)
+            #javelin_server.com_player.handle_event(event)
 
 
 def render_world():
@@ -64,13 +58,6 @@ def update():
         game_object.update()
 
     game_world.handle_collisions()
-    # if running_server100.player.x > 1440 and running_server100.com_player.x < 1440:
-    #     game_world.clear()
-    #     game_framework.change_mode(you_win_mode)
-    # elif running_server100.player.x < 1440 and running_server100.com_player.x > 1440:
-    #     game_world.clear()
-    #     game_framework.change_mode(you_lose_mode)
-
     current_time = get_time()
 
     if current_time - start_time >= 5 and is_played == False:
