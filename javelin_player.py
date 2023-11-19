@@ -1,6 +1,6 @@
 import time
 
-from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, SDLK_j,SDL_KEYDOWN, SDLK_SPACE
+from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, SDLK_t,SDL_KEYDOWN, SDLK_SPACE
 
 import finish_line
 import game_framework
@@ -8,6 +8,7 @@ import game_world
 import javelin_server
 import you_win_mode
 from camera import Camera
+from javelin import Javelin
 
 PIXEL_PER_METER = (10.0/0.3)
 RUN_SPEED_KMPH = 4.0 # Km / Hour
@@ -20,8 +21,8 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 6
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
-def j_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_j
+def t_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_t
 def land(e):
     return e[0] == 'LAND'
 
@@ -36,7 +37,6 @@ class Ready:
 
     @staticmethod
     def exit(player,e):
-
         pass
 
     @staticmethod
@@ -105,15 +105,12 @@ class Run:
             player.image.clip_draw(205, 661 - 304, 40, 34, sx, sy, 120, 102)
 
 
-class Jump:
+class Throw:
     @staticmethod
     def enter(player,e):
-        # if not player.is_jump:
-            #player.x += 10
-            player.x = clamp(0, player.x, javelin_server.background.w-1)
-            player.y = clamp(0, player.y, javelin_server.background.h-1)
-            player.jump_force = 150
-            player.is_jumping = True
+        javelin_server.javelin = Javelin()
+        game_world.add_object(javelin_server.javelin,0)
+        game_world.remove_object(javelin_server.player)
     @staticmethod
     def exit(player,e):
         player.is_jumping = False
@@ -121,31 +118,32 @@ class Jump:
 
     @staticmethod
     def do(player):
-        global pps
-        player.y += player.jump_force * game_framework.frame_time
-        player.jump_force -= 200 * game_framework.frame_time
-
-        # 점프 중 수평 운동
-        player.x += pps * game_framework.frame_time
-        # 이동 범위 제한
-        player.x = clamp(0, player.x, javelin_server.background.w - 1)
-        player.y = clamp(0, player.y, javelin_server.background.h - 1)
-        if player.y <= 130:
-            player.state_machine.handle_event(('LAND',0))
-
+        # global pps
+        # player.y += player.jump_force * game_framework.frame_time
+        # player.jump_force -= 200 * game_framework.frame_time
+        #
+        # # 점프 중 수평 운동
+        # player.x += pps * game_framework.frame_time
+        # # 이동 범위 제한
+        # player.x = clamp(0, player.x, javelin_server.background.w - 1)
+        # player.y = clamp(0, player.y, javelin_server.background.h - 1)
+        # if player.y <= 130:
+        #     player.state_machine.handle_event(('LAND',0))
+        pass
 
     @staticmethod
     def draw(player):
-        sx, sy = player.x - javelin_server.background.window_left, player.y - javelin_server.background.window_bottom
-        player.image.clip_draw(191, 661 - 72, 31, 19, sx, sy, 93, 57)
+        # sx, sy = player.x - javelin_server.background.window_left, player.y - javelin_server.background.window_bottom
+        # player.image.clip_draw(191, 661 - 72, 31, 19, sx, sy, 93, 57)
+        pass
 
 class StateMachine:
     def __init__(self, player):
         self.player = player
         self.cur_state = Ready
         self.transitions = {Ready: {space_down: Run},
-                            Run:{space_down: Run,j_down: Jump},
-                            Jump:{land: Run}}
+                            Run:{space_down: Run,t_down: Throw},
+                            Throw:{}}
 
     def handle_event(self, e):
 
