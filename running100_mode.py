@@ -76,13 +76,6 @@ def update():
         game_object.update()
 
     game_world.handle_collisions()
-    # if running_server100.player.x > 1440 and running_server100.com_player.x < 1440:
-    #     game_world.clear()
-    #     game_framework.change_mode(you_win_mode)
-    # elif running_server100.player.x < 1440 and running_server100.com_player.x > 1440:
-    #     game_world.clear()
-    #     game_framework.change_mode(you_lose_mode)
-
     current_time = get_time()
 
     if current_time - start_time >= 5 and is_played == False:
