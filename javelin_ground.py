@@ -4,7 +4,7 @@ import running_server100
 from camera import Camera
 
 
-class RunningGround:
+class JavelinGround:
     def __init__(self):
         self.image = load_image('javelinGround.png')
         self.canvas_width = get_canvas_width()

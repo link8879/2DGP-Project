@@ -2,11 +2,9 @@ from pico2d import *
 import game_framework
 import game_world
 import title_mode
-from runningGround import RunningGround
-from running_player import Runner
-from com_running_player import ComRunningPlayer
-from finish_line import FinishLine
-from com_finish_line import ComFinishLine
+from javelin_ground import JavelinGround
+from javelin_player import Thrower
+#from com_javelin_player import ComThrower
 import running_server100
 
 def init():
@@ -16,17 +14,14 @@ def init():
     global is_played
     global start_time
 
-    running_server100.background = RunningGround()
-    running_server100.player = Runner()
-    running_server100.com_player = ComRunningPlayer()
-    running_server100.player_finishline = FinishLine()
-    running_server100.com_finishline = ComFinishLine()
+    running_server100.background = JavelinGround
+    running_server100.player = Thrower()
+    #running_server100.com_player = ComThrower()
+
 
     game_world.add_object(running_server100.background,0)
     game_world.add_object(running_server100.player,1)
-    game_world.add_object(running_server100.com_player,1)
-    game_world.add_object(running_server100.com_finishline,0)
-    game_world.add_object(running_server100.player_finishline,0)
+    #game_world.add_object(running_server100.com_player,1)
 
     print(running_server100.player.x)
     print(running_server100.com_player.x)
