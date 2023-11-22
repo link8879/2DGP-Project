@@ -108,9 +108,13 @@ class Run:
 class Throw:
     @staticmethod
     def enter(player,e):
-        javelin_server.javelin = Javelin()
+        javelin_server.javelin = Javelin(player.velocity,player.x,player.y)
         game_world.add_object(javelin_server.javelin,0)
-        game_world.remove_object(javelin_server.player)
+        player.camera = 1
+
+
+
+        # game_world.remove_object(javelin_server.player)
     @staticmethod
     def exit(player,e):
         player.is_jumping = False
@@ -133,8 +137,8 @@ class Throw:
 
     @staticmethod
     def draw(player):
-        # sx, sy = player.x - javelin_server.background.window_left, player.y - javelin_server.background.window_bottom
-        # player.image.clip_draw(191, 661 - 72, 31, 19, sx, sy, 93, 57)
+        sx, sy = player.x - javelin_server.background.window_left, player.y - javelin_server.background.window_bottom
+        player.image.clip_draw(136, 661 - 269, 24, 25, sx, sy, 72, 75)
         pass
 
 class StateMachine:
@@ -184,6 +188,7 @@ class Thrower:
         self.collision = False
         self.sound = load_music('runningsound_effect.wav')
         self.sound.set_volume(50)
+        self.camera = 0
 
     def update(self):
         self.state_machine.update()

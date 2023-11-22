@@ -18,6 +18,11 @@ class JavelinGround:
             self.canvas_width, self.canvas_height,
             0, 0)
     def update(self):
-        self.window_left = clamp(0,int(javelin_server.player.x) - self.canvas_width // 2,self.w - self.canvas_width - 1)
-        self.window_bottom = clamp(0, int(javelin_server.player.y) - self.canvas_height // 2,self.h - self.canvas_height - 1)
-        pass
+        if javelin_server.player.camera == 0:
+            self.window_left = clamp(0,int(javelin_server.player.x) - self.canvas_width // 2,self.w - self.canvas_width - 1)
+            self.window_bottom = clamp(0, int(javelin_server.player.y) - self.canvas_height // 2,self.h - self.canvas_height - 1)
+        else:
+            self.window_left = clamp(0, int(javelin_server.javelin.x) - self.canvas_width // 2,
+                                     self.w - self.canvas_width - 1)
+            self.window_bottom = clamp(0, int(javelin_server.javelin.y) - self.canvas_height // 2,
+                                       self.h - self.canvas_height - 1)

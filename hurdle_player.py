@@ -113,7 +113,7 @@ class Jump:
             #player.x += 10
             player.x = clamp(0, player.x, running_server100.background.w-1)
             player.y = clamp(0, player.y, running_server100.background.h-1)
-            player.jump_force = 150
+            player.strength = 150
             player.is_jumping = True
     @staticmethod
     def exit(player,e):
@@ -123,8 +123,8 @@ class Jump:
     @staticmethod
     def do(player):
         global pps
-        player.y += player.jump_force * game_framework.frame_time
-        player.jump_force -= 200 * game_framework.frame_time
+        player.y += player.strength * game_framework.frame_time
+        player.strength -= 200 * game_framework.frame_time
 
         # 점프 중 수평 운동
         player.x += pps * game_framework.frame_time

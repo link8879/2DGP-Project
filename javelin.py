@@ -1,4 +1,4 @@
-from pico2d import load_image, load_music
+from pico2d import load_image, load_music, clamp
 
 import game_framework
 import javelin_server
@@ -11,22 +11,22 @@ class Flying:
         pass
     @staticmethod
     def exit(player,e):
-        player.is_jumping = False
         pass
 
     @staticmethod
     def do(player):
-        # global pps
-        # player.y += player.jump_force * game_framework.frame_time
-        # player.jump_force -= 200 * game_framework.frame_time
-        #
-        # # 점프 중 수평 운동
-        # player.x += pps * game_framework.frame_time
-        # # 이동 범위 제한
-        # player.x = clamp(0, player.x, javelin_server.background.w - 1)
-        # player.y = clamp(0, player.y, javelin_server.background.h - 1)
-        # if player.y <= 130:
-        #     player.state_machine.handle_event(('LAND',0))
+
+        pps = player.change_velocity_to_pps()
+        player.y += player.strength * game_framework.frame_time
+        player.strength -= 100 * game_framework.frame_time
+
+        # 점프 중 수평 운동
+        player.x += pps * game_framework.frame_time
+        # 이동 범위 제한
+        player.x = clamp(0, player.x, javelin_server.background.w - 1)
+        player.y = clamp(0, player.y, javelin_server.background.h - 1)
+        if player.y <= 130:
+            pass# player.state_machine.handle_event(('LAND',0))
         pass
 
     @staticmethod
@@ -65,17 +65,16 @@ class StateMachine:
         self.cur_state.draw(self.player)
 
 class Javelin:
-    def __init__(self):
-        self.x = 20
-        self.y = 130
+    def __init__(self,velocity,x,y):
+        self.x = x
+        self.y = y
         self.image = load_image('player_animation.png')
         self.frame = 1
         self.action = 0
-        self.velocity = 4.0
+        self.velocity = velocity
         self.state_machine = StateMachine(self)
         self.state_machine.start()
-        self.jump_force = 0
-        self.is_jumping = False
+        self.strength = velocity * 10
         self.time = time.time()
         self.collision = False
         self.sound = load_music('runningsound_effect.wav')
@@ -102,10 +101,7 @@ class Javelin:
             return self.x -15, self.y -50, self.x +15, self.y +50
 
     def handle_collision(self, group, other):
-        if group == 'player:hurdles':
-            self.velocity -=0.01
-        elif group == 'player:finishline':
-            game_framework.change_mode(you_win_mode)
+       pass
 
 
 
