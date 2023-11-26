@@ -8,6 +8,7 @@ import time
 class Flying:
     @staticmethod
     def enter(player,e):
+
         pass
     @staticmethod
     def exit(player,e):
@@ -15,7 +16,6 @@ class Flying:
 
     @staticmethod
     def do(player):
-
         pps = player.change_velocity_to_pps()
         player.y += player.strength * game_framework.frame_time
         player.strength -= 100 * game_framework.frame_time
@@ -26,14 +26,31 @@ class Flying:
         player.x = clamp(0, player.x, javelin_server.background.w - 1)
         player.y = clamp(0, player.y, javelin_server.background.h - 1)
         if player.y <= 130:
-            pass# player.state_machine.handle_event(('LAND',0))
+            player.velocity = 0
+            pps = 0
+            player.y = 130
         pass
 
     @staticmethod
     def draw(player):
+        global distance
         sx, sy = player.x - javelin_server.background.window_left, player.y - javelin_server.background.window_bottom
-        # player.image.clip_draw(191, 661 - 72, 31, 19, sx, sy, 93, 57)
-        player.image.clip_draw(5,661-346,28,28,sx,sy,84,84)
+        step = distance / 7
+        if player.x - player.throwLocation < step:
+            player.image.clip_draw(5, 661 - 346, 28, 28, sx, sy, 84, 84)
+        elif player.x - player.throwLocation < 2 * step:
+            player.image.clip_draw(40, 661 - 336, 40, 14, sx, sy, 120, 42)
+        elif player.x - player.throwLocation < 3 * step:
+            player.image.clip_draw(98, 661 - 324, 40, 2, sx, sy, 120, 6)
+        elif player.x - player.throwLocation < 4 * step:
+            player.image.clip_draw(157, 661 - 335, 40, 14, sx, sy, 120, 42)
+        elif player.x - player.throwLocation < 5 * step:
+            player.image.clip_draw(215, 661 - 336, 36, 18, sx, sy, 108, 54)
+        elif player.x - player.throwLocation < 6 * step:
+            player.image.clip_draw(273, 661 - 357, 28, 28, sx, sy, 84, 84)
+        else:
+            player.image.clip_draw(326, 661 - 358, 18, 36, sx, sy, 54, 108)
+
         pass
 
 class StateMachine:
@@ -66,8 +83,10 @@ class StateMachine:
 
 class Javelin:
     def __init__(self,velocity,x,y):
+
         self.x = x
         self.y = y
+        self.throwLocation = x
         self.image = load_image('player_animation.png')
         self.frame = 1
         self.action = 0
@@ -80,6 +99,12 @@ class Javelin:
         self.sound = load_music('runningsound_effect.wav')
         self.sound.set_volume(50)
 
+        global distance
+        pps = self.change_velocity_to_pps()
+        flight_time = 2 * self.strength / 100
+        distance = flight_time * pps
+
+        print(distance)
     def update(self):
         self.state_machine.update()
 
