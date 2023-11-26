@@ -4,6 +4,7 @@ import game_world
 import title_mode
 from javelin_ground import JavelinGround
 from javelin_player import Thrower
+from javelin_foul_line import FoulLine
 #from com_javelin_player import ComThrower
 import javelin_server
 
@@ -16,10 +17,13 @@ def init():
 
     javelin_server.background = JavelinGround()
     javelin_server.player = Thrower()
-
+    javelin_server.foul_line = FoulLine()
 
     game_world.add_object(javelin_server.background,0)
     game_world.add_object(javelin_server.player,1)
+    game_world.add_object(javelin_server.foul_line,1)
+    game_world.add_collision_pair('foulLine:player',javelin_server.player,None)
+    game_world.add_collision_pair('foulLine:player',None,javelin_server.foul_line)
 
     bgm = load_music('start_music.mp3')
     bgm.set_volume(100)
@@ -48,6 +52,10 @@ def handle_events():
 def render_world():
     clear_canvas()
     game_world.render()
+
+    if javelin_server.foul_line.is_collision:
+        font = load_font('ENCR10B.TTF', 50)
+        font.draw(200, 200, 'FOUL!', (255, 0, 0))
     update_canvas()
 
 def update():
@@ -77,7 +85,10 @@ def draw():
     update_canvas()
 
 def pause():
- pass
+
+    pass
 
 def resume():
- pass
+    finish()
+    init()
+

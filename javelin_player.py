@@ -111,9 +111,6 @@ class Throw:
         javelin_server.javelin = Javelin(player.velocity,player.x,player.y)
         game_world.add_object(javelin_server.javelin,0)
         player.camera = 1
-
-
-
         # game_world.remove_object(javelin_server.player)
     @staticmethod
     def exit(player,e):
