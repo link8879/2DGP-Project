@@ -1,6 +1,7 @@
 from pico2d import load_image, load_music, clamp
 
 import game_framework
+import javelin_mode
 import javelin_server
 import you_win_mode
 import time
@@ -29,6 +30,10 @@ class Flying:
             player.velocity = 0
             pps = 0
             player.y = 130
+
+            player.timer += game_framework.frame_time
+            if player.timer > 5.0:
+                game_framework.change_mode(javelin_mode)
         pass
 
     @staticmethod
@@ -98,13 +103,14 @@ class Javelin:
         self.collision = False
         self.sound = load_music('runningsound_effect.wav')
         self.sound.set_volume(50)
+        self.timer = 0
 
         global distance
         pps = self.change_velocity_to_pps()
         flight_time = 2 * self.strength / 100
         distance = flight_time * pps
 
-        print(distance)
+        javelin_server.flying_distance.append(distance)
     def update(self):
         self.state_machine.update()
 

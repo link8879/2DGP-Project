@@ -15,7 +15,7 @@ from javelin import Javelin
 
 class FoulLine:
     def __init__(self):
-        self.x = 200
+        self.x = 1000
         self.y = 130
         self.is_collision = False
     def update(self):
@@ -34,4 +34,5 @@ class FoulLine:
         if group == 'foulLine:player':
             self.is_collision = True
             game_framework.push_mode(foul_mode)
+            javelin_server.flying_distance.append(0)
             pass
