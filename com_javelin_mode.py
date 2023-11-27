@@ -23,6 +23,7 @@ def init():
     game_world.add_object(javelin_server.background,0)
     game_world.add_object(javelin_server.player,1)
     game_world.add_object(javelin_server.foul_line,1)
+
     game_world.add_collision_pair('foulLine:Complayer',javelin_server.player,None)
     game_world.add_collision_pair('foulLine:Complayer',None,javelin_server.foul_line)
 

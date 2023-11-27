@@ -84,7 +84,6 @@ class Run:
         FRAMES_PER_ACTION = 6
 
         pps = player.change_velocity_to_pps()
-        print(pps)
         player.x += pps * game_framework.frame_time
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
 

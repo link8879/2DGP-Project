@@ -9,6 +9,7 @@ import game_world
 import javelin_server
 import you_win_mode
 from camera import Camera
+from com_javelin import ComJavelin
 from javelin import Javelin
 
 PIXEL_PER_METER = (10.0/0.3)
@@ -27,6 +28,9 @@ def t_down(e):
 
 def time_out(e):
     return e[0] == 'TIME_OUT'
+
+def collision(e):
+    return e[0] == 'THROW'
 
 class Ready:
     @staticmethod
@@ -57,11 +61,18 @@ class Run:
         global FRAMES_PER_ACTION
         global pps
 
-        player.velocity += 1.0
+        TIME_PER_ACTION += 0.001
+
+        ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+        FRAMES_PER_ACTION = 6
+        
+        player.velocity += 0.005
         pps = player.change_velocity_to_pps()
 
         player.x = clamp(0, player.x, javelin_server.background.w-1)
         player.y = clamp(0, player.y, javelin_server.background.h-1)
+
+        print(pps)
         pass
     @staticmethod
     def exit(player,e):
@@ -79,6 +90,8 @@ class Run:
         pps = player.change_velocity_to_pps()
         player.x += pps * game_framework.frame_time
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
+
+        player.state_machine.handle_event(('TIME_OUT', 0))
 
     @staticmethod
     def draw(player):
@@ -100,7 +113,7 @@ class Run:
 class Throw:
     @staticmethod
     def enter(player,e):
-        javelin_server.javelin = Javelin(player.velocity,player.x,player.y)
+        javelin_server.javelin = ComJavelin(player.velocity,player.x,player.y)
         game_world.add_object(javelin_server.javelin,0)
         player.camera = 1
         # game_world.remove_object(javelin_server.player)
@@ -111,17 +124,6 @@ class Throw:
 
     @staticmethod
     def do(player):
-        # global pps
-        # player.y += player.jump_force * game_framework.frame_time
-        # player.jump_force -= 200 * game_framework.frame_time
-        #
-        # # 점프 중 수평 운동
-        # player.x += pps * game_framework.frame_time
-        # # 이동 범위 제한
-        # player.x = clamp(0, player.x, javelin_server.background.w - 1)
-        # player.y = clamp(0, player.y, javelin_server.background.h - 1)
-        # if player.y <= 130:
-        #     player.state_machine.handle_event(('LAND',0))
         pass
 
     @staticmethod
@@ -135,7 +137,7 @@ class StateMachine:
         self.player = player
         self.cur_state = Ready
         self.transitions = {Ready: {time_out: Run},
-                            Run:{space_down: Run,t_down: Throw},
+                            Run:{time_out: Run, collision: Throw},
                             Throw:{}}
 
     def handle_event(self, e):
@@ -168,7 +170,7 @@ class ComThrower:
         self.image = load_image('complayer_animation.png')
         self.frame = 1
         self.action = 0
-        self.velocity = 4.0
+        self.velocity = 10
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_force = 0
@@ -200,8 +202,9 @@ class ComThrower:
             return self.x -15, self.y -50, self.x +15, self.y +50
 
     def handle_collision(self, group, other):
-        if group == 'foulLine:com_player':
+        if group == 'foulLine:Complayer':
             self.state_machine.handle_event(('THROW',0))
+            print('col')
 
 
 
