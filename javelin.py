@@ -1,5 +1,6 @@
 from pico2d import load_image, load_music, clamp
 
+import com_javelin_mode
 import game_framework
 import javelin_mode
 import javelin_server
@@ -33,7 +34,7 @@ class Flying:
 
             player.timer += game_framework.frame_time
             if player.timer > 5.0:
-                game_framework.change_mode(javelin_mode)
+                game_framework.change_mode(com_javelin_mode)
         pass
 
     @staticmethod

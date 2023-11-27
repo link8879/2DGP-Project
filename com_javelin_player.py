@@ -1,6 +1,7 @@
 import time
 
-from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, SDLK_t,SDL_KEYDOWN, SDLK_SPACE
+from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, SDLK_t, \
+    SDL_KEYDOWN, SDLK_SPACE, get_time
 
 import finish_line
 import game_framework
@@ -23,16 +24,20 @@ def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 def t_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_t
-def land(e):
-    return e[0] == 'LAND'
+
+def time_out(e):
+    return e[0] == 'TIME_OUT'
 
 class Ready:
     @staticmethod
     def enter(player,e):
+        player.wait_time = get_time()
         pass
 
     @staticmethod
     def do(player):
+        if get_time() - player.wait_time > 5:
+            player.state_machine.handle_event(('TIME_OUT', 0))
         pass
 
     @staticmethod
@@ -57,13 +62,7 @@ class Run:
 
         player.x = clamp(0, player.x, javelin_server.background.w-1)
         player.y = clamp(0, player.y, javelin_server.background.h-1)
-
-        TIME_PER_ACTION -= 0.1
-        ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-        FRAMES_PER_ACTION = 6
-
-        if TIME_PER_ACTION <= 0.25:
-            TIME_PER_ACTION = 0.25
+        pass
     @staticmethod
     def exit(player,e):
         pass
@@ -72,19 +71,12 @@ class Run:
     def do(player):
         global pps
         global TIME_PER_ACTION
-        if pps >= 0.01:
-            player.velocity -= 0.01
-        else:
-            pass
-
-
-        TIME_PER_ACTION += 0.001
-
-        ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-        FRAMES_PER_ACTION = 6
+        # if pps >= 0.01:
+        #     player.velocity -= 0.01
+        # else:
+        #     pass
 
         pps = player.change_velocity_to_pps()
-        print(pps)
         player.x += pps * game_framework.frame_time
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
 
@@ -142,7 +134,7 @@ class StateMachine:
     def __init__(self, player):
         self.player = player
         self.cur_state = Ready
-        self.transitions = {Ready: {space_down: Run},
+        self.transitions = {Ready: {time_out: Run},
                             Run:{space_down: Run,t_down: Throw},
                             Throw:{}}
 
@@ -169,11 +161,11 @@ class StateMachine:
     def draw(self):
         self.cur_state.draw(self.player)
 
-class Thrower:
+class ComThrower:
     def __init__(self):
         self.x = 20
         self.y = 130
-        self.image = load_image('player_animation.png')
+        self.image = load_image('complayer_animation.png')
         self.frame = 1
         self.action = 0
         self.velocity = 4.0
@@ -208,7 +200,9 @@ class Thrower:
             return self.x -15, self.y -50, self.x +15, self.y +50
 
     def handle_collision(self, group, other):
-        pass
+        if group == 'foulLine:com_player':
+            self.state_machine.handle_event(('THROW',0))
+
 
 
 

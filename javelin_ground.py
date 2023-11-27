@@ -13,6 +13,8 @@ class JavelinGround:
         self.h = self.image.h
         self.window_left = 0
         self.window_bottom = 0
+        self.window_right = 800
+        self.window_height = 600
     def draw(self):
         #self.image.clip_draw(0,0,800,600,400,300)
         self.image.clip_draw_to_origin(

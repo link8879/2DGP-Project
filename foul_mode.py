@@ -1,4 +1,6 @@
 from pico2d import *
+
+import com_javelin_mode
 import game_framework
 import game_world
 import javelin_mode
@@ -59,4 +61,4 @@ def pause():
 
 def resume():
     print(5)
-    game_framework.change_mode(javelin_mode)
+    game_framework.change_mode(com_javelin_mode)

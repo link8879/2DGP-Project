@@ -1,9 +1,8 @@
 from pico2d import *
-
-import com_javelin_mode
 import game_framework
 import game_world
 import title_mode
+from com_javelin_player import ComThrower
 from javelin_ground import JavelinGround
 from javelin_player import Thrower
 from javelin_foul_line import FoulLine
@@ -18,14 +17,14 @@ def init():
     global start_time
 
     javelin_server.background = JavelinGround()
-    javelin_server.player = Thrower()
+    javelin_server.player = ComThrower()
     javelin_server.foul_line = FoulLine()
 
     game_world.add_object(javelin_server.background,0)
     game_world.add_object(javelin_server.player,1)
     game_world.add_object(javelin_server.foul_line,1)
-    game_world.add_collision_pair('foulLine:player',javelin_server.player,None)
-    game_world.add_collision_pair('foulLine:player',None,javelin_server.foul_line)
+    game_world.add_collision_pair('foulLine:Complayer',javelin_server.player,None)
+    game_world.add_collision_pair('foulLine:Complayer',None,javelin_server.foul_line)
 
     bgm = load_music('start_music.mp3')
     bgm.set_volume(100)
@@ -87,5 +86,5 @@ def pause():
     pass
 
 def resume():
-    game_framework.change_mode(com_javelin_mode)
+    pass
 
