@@ -65,7 +65,7 @@ class Run:
 
         ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
         FRAMES_PER_ACTION = 6
-        
+
         player.velocity += 0.005
         pps = player.change_velocity_to_pps()
 

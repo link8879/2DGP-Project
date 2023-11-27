@@ -4,8 +4,28 @@ import com_javelin_mode
 import game_framework
 import javelin_mode
 import javelin_server
+import javelin_you_lose_mode
+import javelin_you_win_mode
 import you_win_mode
 import time
+
+def calculate_all_distance():
+
+    player_max_distance = 0
+    com_player_max_distance = 0
+
+    for i in javelin_server.flying_distance:
+        if i > player_max_distance:
+            player_max_distance = i
+
+    for i in javelin_server.com_flying_distance:
+        if i > com_player_max_distance:
+            com_player_max_distance = i
+
+    if player_max_distance > com_player_max_distance:
+        game_framework.change_mode(javelin_you_win_mode)
+    else:
+        game_framework.change_mode(javelin_you_lose_mode)
 
 class Flying:
     @staticmethod
@@ -34,7 +54,10 @@ class Flying:
 
             player.timer += game_framework.frame_time
             if player.timer > 5.0:
-                game_framework.change_mode(javelin_mode)
+                if len(javelin_server.com_flying_distance) == 1:
+                    calculate_all_distance()                    # 승패판정
+                else:
+                    game_framework.change_mode(javelin_mode)
         pass
 
     @staticmethod
@@ -111,7 +134,7 @@ class ComJavelin:
         flight_time = 2 * self.strength / 100
         distance = flight_time * pps
 
-        javelin_server.flying_distance.append(distance)
+        javelin_server.com_flying_distance.append(distance)
     def update(self):
         self.state_machine.update()
 
