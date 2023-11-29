@@ -1,6 +1,7 @@
 import time
 
-from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, SDLK_t,SDL_KEYDOWN, SDLK_SPACE
+from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, SDLK_t, \
+    SDL_KEYDOWN, SDLK_SPACE, get_time
 
 import finish_line
 import game_framework
@@ -26,13 +27,19 @@ def t_down(e):
 def land(e):
     return e[0] == 'LAND'
 
+def time_out(e):
+    return e[0] == 'TIME_OUT'
+
 class Ready:
     @staticmethod
     def enter(player,e):
+        player.wait_time = get_time()
         pass
 
     @staticmethod
     def do(player):
+        if get_time() - player.wait_time > 5:
+            player.state_machine.handle_event(('TIME_OUT', 0))
         pass
 
     @staticmethod
@@ -41,8 +48,8 @@ class Ready:
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(6,661-150,31-6,150-131,30,100,75,57)
-
+        # player.image.clip_draw(0, 661 - 303, 40, 34, 30, 100, 120, 102)
+        pass
 class Run:
     time_elapsed = 0
     @staticmethod
@@ -141,7 +148,7 @@ class StateMachine:
     def __init__(self, player):
         self.player = player
         self.cur_state = Ready
-        self.transitions = {Ready: {space_down: Run},
+        self.transitions = {Ready: {time_out: Run},
                             Run:{space_down: Run,t_down: Throw},
                             Throw:{}}
 

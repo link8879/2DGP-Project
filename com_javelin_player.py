@@ -50,7 +50,7 @@ class Ready:
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(6,661-150,31-6,150-131,30,100,75,57)
+        pass
 
 class Run:
     time_elapsed = 0
@@ -61,7 +61,7 @@ class Run:
         global FRAMES_PER_ACTION
         global pps
 
-        TIME_PER_ACTION += 0.001
+        TIME_PER_ACTION -= 0.001
 
         ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
         FRAMES_PER_ACTION = 6

@@ -31,7 +31,7 @@ def init():
     bgm.set_volume(100)
     bgm.play()
 
-    second_sound = load_music('startsound.wav')
+    second_sound = load_music('javelin_startsound.wav')
     is_played = False
 
     start_time = get_time()

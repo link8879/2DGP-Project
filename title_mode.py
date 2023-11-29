@@ -1,9 +1,10 @@
-from pico2d import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, load_music, SDLK_1,SDLK_2
+from pico2d import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, load_music, SDLK_1,SDLK_2,SDLK_3
 
 import game_framework
 from pico2d import load_image, clear_canvas, update_canvas, get_events
 
 import hurdle110_mode
+import javelin_mode
 import running100_mode
 
 
@@ -42,6 +43,9 @@ def handle_events():
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_2):
             bgm.stop()
             game_framework.change_mode(hurdle110_mode)
+        elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_3):
+            bgm.stop()
+            game_framework.change_mode(javelin_mode)
 
 
 def pause():
