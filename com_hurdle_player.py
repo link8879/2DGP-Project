@@ -203,7 +203,7 @@ class ComHurdleRunner:
             game_framework.change_mode(you_lose_mode)
 
     def change_velocity_to_pps(self):
-        PIXEL_PER_METER = (10.0 / 0.3)
+        PIXEL_PER_METER = (100/2)
         RUN_SPEED_MPM = (self.velocity * 1000.0 / 60.0)
         RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
         RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
