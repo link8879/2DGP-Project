@@ -39,7 +39,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_1):
-            game_framework.change_mode(running100_mode)
+            game_framework.change_mode(running_select_distance_mode)
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_2):
             game_framework.change_mode(hurdle_select_distance_mode)
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_3):

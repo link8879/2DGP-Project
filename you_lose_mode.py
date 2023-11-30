@@ -19,7 +19,7 @@ def init():
     global total_time
 
     font = load_font('ENCR10B.TTF', 20)
-    total_time = time.time() - running_server100.player.time - 5
+    total_time = time.time() - running_server.player.time - 5
     
     image = load_image('you_lose.png')
     bgm = load_music('lose_music.mp3')

@@ -16,11 +16,11 @@ def init():
     global is_played
     global start_time
 
-    running_server.background = RunningGround('running_ground.png')
+    running_server.background = RunningGround('running_ground200.png')
     running_server.player = Runner()
     running_server.com_player = ComRunningPlayer()
-    running_server.player_finishline = FinishLine(5000)
-    running_server.com_finishline = ComFinishLine(5000  )
+    running_server.player_finishline = FinishLine()
+    running_server.com_finishline = ComFinishLine()
 
     game_world.add_object(running_server.background,0)
     game_world.add_object(running_server.player,1)

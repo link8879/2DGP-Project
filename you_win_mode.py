@@ -17,7 +17,7 @@ def init():
     global font
 
     font = load_font('ENCR10B.TTF', 20)
-    total_time = time.time() - running_server100.player.time - 5 # 끝날 때 시간으로 바꿀 필요 있음
+    total_time = time.time() - running_server.player.time - 5 # 끝날 때 시간으로 바꿀 필요 있음
     image = load_image('you_win.png')
     bgm = load_music('win_music.mp3')
     bgm.set_volume(100)

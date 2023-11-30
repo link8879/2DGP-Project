@@ -66,8 +66,8 @@ class Run:
         player.velocity += 1.0
         pps = player.change_velocity_to_pps()
 
-        player.x = clamp(0, player.x, running_server100.background.w-1)
-        player.y = clamp(0, player.y, running_server100.background.h-1)
+        player.x = clamp(0, player.x, running_server.background.w-1)
+        player.y = clamp(0, player.y, running_server.background.h-1)
     @staticmethod
     def exit(player,e):
         pass
@@ -80,30 +80,30 @@ class Run:
     @staticmethod
     def draw(player):
         if int(player.frame) == 0:
-            player.image.clip_draw(28, 661 - 33, 12, 32, player.x - running_server100.background.window_left,
+            player.image.clip_draw(28, 661 - 33, 12, 32, player.x - running_server.background.window_left,
                                    player.y + 30, 36, 96)
         elif int(player.frame) == 1:
-            player.image.clip_draw(46, 661 - 33, 14, 32, player.x - running_server100.background.window_left,
+            player.image.clip_draw(46, 661 - 33, 14, 32, player.x - running_server.background.window_left,
                                    player.y + 30, 42, 96)
         elif int(player.frame) == 2:
-            player.image.clip_draw(62, 661 - 33, 16, 32, player.x - running_server100.background.window_left,
+            player.image.clip_draw(62, 661 - 33, 16, 32, player.x - running_server.background.window_left,
                                    player.y + 30, 48, 96)
         elif int(player.frame) == 3:
-            player.image.clip_draw(81, 661 - 33, 26, 28, player.x - running_server100.background.window_left,
+            player.image.clip_draw(81, 661 - 33, 26, 28, player.x - running_server.background.window_left,
                                    player.y + 30, 78, 84)
         elif int(player.frame) == 4:
-            player.image.clip_draw(115, 661 - 33, 21, 32, player.x - running_server100.background.window_left,
+            player.image.clip_draw(115, 661 - 33, 21, 32, player.x - running_server.background.window_left,
                                    player.y + 30, 63, 96)
         elif int(player.frame) == 5:
-            player.image.clip_draw(143, 661 - 33, 15, 32, player.x - running_server100.background.window_left,
+            player.image.clip_draw(143, 661 - 33, 15, 32, player.x - running_server.background.window_left,
                                    player.y + 30, 45, 96)
 
 
 class Jump:
     @staticmethod
     def enter(player,e):
-            player.x = clamp(0, player.x, running_server100.background.w-1)
-            player.y = clamp(0, player.y, running_server100.background.h-1)
+            player.x = clamp(0, player.x, running_server.background.w-1)
+            player.y = clamp(0, player.y, running_server.background.h-1)
             player.strength = 150
             player.is_jumping = True
     @staticmethod
@@ -120,15 +120,15 @@ class Jump:
         # 점프 중 수평 운동
         player.x += pps * game_framework.frame_time
         # 이동 범위 제한
-        player.x = clamp(0, player.x, running_server100.background.w - 1)
-        player.y = clamp(0, player.y, running_server100.background.h - 1)
+        player.x = clamp(0, player.x, running_server.background.w - 1)
+        player.y = clamp(0, player.y, running_server.background.h - 1)
         if player.y <= 250:
             player.state_machine.handle_event(('LAND',0))
 
 
     @staticmethod
     def draw(player):
-        sx, sy = player.x - running_server100.background.window_left, player.y - running_server100.background.window_bottom
+        sx, sy = player.x - running_server.background.window_left, player.y - running_server.background.window_bottom
         player.image.clip_draw(191, 661 - 72, 31, 19, sx, sy, 93, 57)
 
 class StateMachine:
@@ -146,12 +146,12 @@ class StateMachine:
                 self.cur_state.exit(self.player,e)
                 self.cur_state = next_state
                 self.cur_state.enter(self.player,e)
-                if running_server100.background.window_left == 0:
+                if running_server.background.window_left == 0:
                     pass
-                elif running_server100.background.window_left >= running_server100.background.w - running_server100.background.canvas_width - 1:
+                elif running_server.background.window_left >= running_server.background.w - running_server.background.canvas_width - 1:
                     pass
                 else:
-                    running_server100.com_player.camera -= 50
+                    running_server.com_player.camera -= 50
 
 
                 return True

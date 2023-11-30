@@ -6,15 +6,17 @@ from pico2d import load_image, clear_canvas, update_canvas, get_events
 import hurdle110_mode
 import javelin_mode
 import running100_mode
+import hurdle_select_distance_mode
+import running200_mode
+import running_select_distance_mode
 import running_server
-import select_difficulty_mode
 
 
 def init():
     global image
     global running
     global bgm
-    image = load_image('select_running_distance.png')
+    image = load_image('EasyOrHard.png')
     running = True
 
 def finish():
@@ -37,15 +39,21 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_1):
-            running_server.difficulty = 1       #100
-            game_framework.change_mode(select_difficulty_mode)
+            if running_server.difficulty == 1:
+                game_framework.change_mode(running100_mode)
+            elif running_server.difficulty == 2:
+                game_framework.change_mode(running200_mode)
+                pass
+            elif running_server.difficulty == 3:
+                pass
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_2):
-            running_server.difficulty = 2       #200
-            game_framework.change_mode(select_difficulty_mode)
-        elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_3):
-            running_server.difficulty = 3       #300
-            game_framework.change_mode(select_difficulty_mode)
-
+            if running_server.difficulty == 1:
+                #game_framework.change_mode(running100_hard_mode)
+                pass
+            elif running_server.difficulty == 2:
+                pass
+            elif running_server.difficulty == 3:
+                pass
 
 def pause():
  pass

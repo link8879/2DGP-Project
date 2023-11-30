@@ -70,17 +70,17 @@ class Run:
         # if player.frame == 0:
         #     player.image.clip_draw(8,661-33,11,32,player.x+100,player.y+50,50,90)
         if int(player.frame) == 0:
-            player.image.clip_draw(28, 661 - 33, 12, 32, player.x- running_server100.background.window_left, player.y + 30, 36, 96)
+            player.image.clip_draw(28, 661 - 33, 12, 32, player.x- running_server.background.window_left, player.y + 30, 36, 96)
         elif int(player.frame) == 1:
-            player.image.clip_draw(46, 661 - 33, 14, 32, player.x- running_server100.background.window_left, player.y + 30, 42, 96)
+            player.image.clip_draw(46, 661 - 33, 14, 32, player.x- running_server.background.window_left, player.y + 30, 42, 96)
         elif int(player.frame) == 2:
-            player.image.clip_draw(62, 661 - 33, 16, 32, player.x- running_server100.background.window_left, player.y + 30, 48, 96)
+            player.image.clip_draw(62, 661 - 33, 16, 32, player.x- running_server.background.window_left, player.y + 30, 48, 96)
         elif int(player.frame) == 3:
-            player.image.clip_draw(81, 661 - 33, 26, 28, player.x- running_server100.background.window_left, player.y + 30, 78, 84)
+            player.image.clip_draw(81, 661 - 33, 26, 28, player.x- running_server.background.window_left, player.y + 30, 78, 84)
         elif int(player.frame) == 4:
-            player.image.clip_draw(115, 661 - 33, 21, 32, player.x- running_server100.background.window_left, player.y + 30, 63, 96)
+            player.image.clip_draw(115, 661 - 33, 21, 32, player.x- running_server.background.window_left, player.y + 30, 63, 96)
         elif int(player.frame) == 5:
-            player.image.clip_draw(143, 661 - 33, 15, 32, player.x- running_server100.background.window_left, player.y + 30, 45, 96)
+            player.image.clip_draw(143, 661 - 33, 15, 32, player.x- running_server.background.window_left, player.y + 30, 45, 96)
 
 class StateMachine:
     def __init__(self, player):
