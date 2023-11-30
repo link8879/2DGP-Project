@@ -15,7 +15,7 @@ from javelin import Javelin
 
 class FoulLine:
     def __init__(self):
-        self.x = 1000
+        self.x = 1500
         self.y = 130
         self.is_collision = False
     def update(self):
