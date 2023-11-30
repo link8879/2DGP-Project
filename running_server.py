@@ -3,4 +3,4 @@ com_player = None
 background = None
 player_finishline = None
 com_finishline = None
-difficulty = None
+distance = None

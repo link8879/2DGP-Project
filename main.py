@@ -2,7 +2,7 @@ from pico2d import open_canvas, delay, close_canvas
 import game_framework
 import hurdle110_mode
 import javelin_mode
-import running100_mode
+import running_mode
 import title_mode
 import you_win_mode
 

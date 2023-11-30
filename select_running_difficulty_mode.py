@@ -5,7 +5,8 @@ from pico2d import load_image, clear_canvas, update_canvas, get_events
 
 import hurdle110_mode
 import javelin_mode
-import running100_mode
+import running_hard_mode
+import running_mode
 import hurdle_select_distance_mode
 import running200_mode
 import running300_mode
@@ -40,22 +41,9 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(running_select_distance_mode)
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_1):
-            if running_server.difficulty == 1:
-                game_framework.change_mode(running100_mode)
-            elif running_server.difficulty == 2:
-                game_framework.change_mode(running200_mode)
-                pass
-            elif running_server.difficulty == 3:
-                game_framework.change_mode(running300_mode)
-                pass
+            game_framework.change_mode(running_mode)
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_2):
-            if running_server.difficulty == 1:
-                #game_framework.change_mode(running100_hard_mode)
-                pass
-            elif running_server.difficulty == 2:
-                pass
-            elif running_server.difficulty == 3:
-                pass
+            game_framework.change_mode(running_hard_mode)
 
 def pause():
  pass

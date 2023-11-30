@@ -7,7 +7,7 @@ import game_framework
 from pico2d import load_image, clear_canvas, update_canvas, get_events
 
 import javelin_server
-import running100_mode
+import running_mode
 import running_server
 import title_mode
 

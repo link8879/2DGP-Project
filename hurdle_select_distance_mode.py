@@ -5,7 +5,7 @@ from pico2d import load_image, clear_canvas, update_canvas, get_events
 
 import hurdle110_mode
 import javelin_mode
-import running100_mode
+import running_mode
 
 
 def init():

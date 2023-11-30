@@ -8,6 +8,7 @@ from com_running_player import ComRunningPlayer
 from finish_line import FinishLine
 from com_finish_line import ComFinishLine
 import running_server
+from com_hard_running_player import ComHardRunningPlayer
 
 def init():
     global playing
@@ -16,11 +17,26 @@ def init():
     global is_played
     global start_time
 
-    running_server.background = RunningGround('running_ground.png')
+    if running_server.distance == 1:
+        running_server.background = RunningGround('running_ground.png')
+        running_server.player_finishline = FinishLine(5000)
+        running_server.com_finishline = ComFinishLine(5000)
+        pass
+    elif running_server.distance == 2:
+        running_server.background = RunningGround('running_ground200.png')
+        running_server.player_finishline = FinishLine(10000)
+        running_server.com_finishline = ComFinishLine(10000)
+        pass
+    elif running_server.distance == 3:
+        running_server.background = RunningGround('running_ground300.png')
+        running_server.player_finishline = FinishLine(15000)
+        running_server.com_finishline = ComFinishLine(15000)
+        pass
+
     running_server.player = Runner()
     running_server.com_player = ComRunningPlayer()
-    running_server.player_finishline = FinishLine(5000)
-    running_server.com_finishline = ComFinishLine(5000)
+    running_server.player = Runner()
+    running_server.com_player = ComHardRunningPlayer()
 
     game_world.add_object(running_server.background,0)
     game_world.add_object(running_server.player,1)
