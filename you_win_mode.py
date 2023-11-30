@@ -5,7 +5,7 @@ from pico2d import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_RETURN, load_music, 
 import game_framework
 from pico2d import load_image, clear_canvas, update_canvas, get_events
 
-import running_server100
+import running_server
 import title_mode
 
 

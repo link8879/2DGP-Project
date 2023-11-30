@@ -6,16 +6,13 @@ from pico2d import load_image, clear_canvas, update_canvas, get_events
 import hurdle110_mode
 import javelin_mode
 import running100_mode
-import hurdle_select_distance_mode
-import running_select_distance_mode
+
 
 def init():
     global image
     global running
     global bgm
-    image = load_image('title.png')
-    bgm = load_music('titlemusic.mp3')
-    bgm.set_volume(100)
+    image = load_image('select_hurdle_distance.png')
     bgm.repeat_play()
     running = True
 
@@ -39,10 +36,13 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_1):
+            bgm.stop()
             game_framework.change_mode(running100_mode)
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_2):
-            game_framework.change_mode(hurdle_select_distance_mode)
+            bgm.stop()
+            game_framework.change_mode(hurdle110_mode)
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_3):
+            bgm.stop()
             game_framework.change_mode(javelin_mode)
 
 

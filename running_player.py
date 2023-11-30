@@ -19,7 +19,7 @@ from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE
 
 import finish_line
-import running_server100
+import running_server
 from camera import Camera
 
 def space_down(e):
@@ -55,8 +55,8 @@ class Run:
         player.velocity += 1.0
         pps = player.change_velocity_to_pps()
 
-        player.x = clamp(0, player.x, running_server100.background.w-1)
-        player.y = clamp(0, player.y, running_server100.background.h-1)
+        player.x = clamp(0, player.x, running_server.background.w-1)
+        player.y = clamp(0, player.y, running_server.background.h-1)
 
         TIME_PER_ACTION -= 0.1
         ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
@@ -90,7 +90,7 @@ class Run:
 
     @staticmethod
     def draw(player):
-        sx, sy = player.x - running_server100.background.window_left, player.y - running_server100.background.window_bottom
+        sx, sy = player.x - running_server.background.window_left, player.y - running_server.background.window_bottom
         if int(player.frame) == 0:
             player.image.clip_draw(28, 661 - 33, 12, 32, sx, sy, 36, 96)
         elif int(player.frame) == 1:
@@ -117,12 +117,12 @@ class StateMachine:
                 self.cur_state.exit(self.player,e)
                 self.cur_state = next_state
                 self.cur_state.enter(self.player,e)
-                if running_server100.background.window_left == 0:
+                if running_server.background.window_left == 0:
                     pass
-                elif running_server100.background.window_left >= running_server100.background.w - running_server100.background.canvas_width - 1:
+                elif running_server.background.window_left >= running_server.background.w - running_server.background.canvas_width - 1:
                     pass
                 else:
-                    running_server100.com_player.camera -= 50
+                    running_server.com_player.camera -= 50
                 return True
         return False
 

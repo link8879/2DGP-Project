@@ -3,7 +3,7 @@ from sdl2 import SDL_KEYDOWN, SDLK_SPACE
 
 import game_framework
 import game_world
-import running_server100
+import running_server
 import you_lose_mode
 
 PIXEL_PER_METER = (100/2)

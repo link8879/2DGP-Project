@@ -7,7 +7,7 @@ from running_player import Runner
 from com_running_player import ComRunningPlayer
 from finish_line import FinishLine
 from com_finish_line import ComFinishLine
-import running_server100
+import running_server
 
 def init():
     global playing

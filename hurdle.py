@@ -1,6 +1,6 @@
 from pico2d import load_image, draw_rectangle
 
-import running_server100
+import running_server
 
 
 class Hurdle:

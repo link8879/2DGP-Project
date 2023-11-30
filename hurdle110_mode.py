@@ -7,7 +7,7 @@ from runningGround import RunningGround
 from com_hurdle_player import ComHurdleRunner
 from finish_line import FinishLine
 from com_finish_line import ComFinishLine
-import running_server100
+import running_server
 from hurdle import Hurdle
 
 def init():
@@ -18,19 +18,19 @@ def init():
     global start_time
     global hurdles
 
-    running_server100.background = RunningGround()
-    running_server100.player = HurdleRunner()
-    running_server100.com_player = ComHurdleRunner()
-    running_server100.player_finishline = FinishLine()
-    running_server100.com_finishline = ComFinishLine()
+    running_server.background = RunningGround()
+    running_server.player = HurdleRunner()
+    running_server.com_player = ComHurdleRunner()
+    running_server.player_finishline = FinishLine()
+    running_server.com_finishline = ComFinishLine()
     hurdles = [Hurdle(i*500 + 500,86) for i in range(4)]
     com_hurdles = [Hurdle(i*500 + 500, 228) for i in range(4)]
 
-    game_world.add_object(running_server100.background,0)
-    game_world.add_object(running_server100.player,1)
-    game_world.add_object(running_server100.com_player,1)
-    game_world.add_object(running_server100.com_finishline,0)
-    game_world.add_object(running_server100.player_finishline,0)
+    game_world.add_object(running_server.background,0)
+    game_world.add_object(running_server.player,1)
+    game_world.add_object(running_server.com_player,1)
+    game_world.add_object(running_server.com_finishline,0)
+    game_world.add_object(running_server.player_finishline,0)
 
     for hurdle in hurdles:
         game_world.add_object(hurdle, 0)
@@ -38,19 +38,19 @@ def init():
     for com_hurdle in com_hurdles:
         game_world.add_object(com_hurdle, 0)
 
-    game_world.add_collision_pair('com_player:hurdles',running_server100.com_player,None)
+    game_world.add_collision_pair('com_player:hurdles',running_server.com_player,None)
     for com_hurdle in com_hurdles:
         game_world.add_collision_pair('com_player:hurdles',None,com_hurdle)
 
-    game_world.add_collision_pair('player:hurdles',running_server100.player,None)
+    game_world.add_collision_pair('player:hurdles',running_server.player,None)
     for hurdle in hurdles:
         game_world.add_collision_pair('player:hurdles',None,hurdle)
 
-    game_world.add_collision_pair('player:finishline', running_server100.player, None)
-    game_world.add_collision_pair('player:finishline', None, running_server100.player_finishline)
+    game_world.add_collision_pair('player:finishline', running_server.player, None)
+    game_world.add_collision_pair('player:finishline', None, running_server.player_finishline)
 
-    game_world.add_collision_pair('com_player:finishline', running_server100.com_player, None)
-    game_world.add_collision_pair('com_player:finishline', None, running_server100.com_finishline)
+    game_world.add_collision_pair('com_player:finishline', running_server.com_player, None)
+    game_world.add_collision_pair('com_player:finishline', None, running_server.com_finishline)
 
     bgm = load_music('start_music.mp3')
     bgm.set_volume(100)
@@ -72,8 +72,8 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
         else:
-            running_server100.player.handle_event(event)
-            running_server100.com_player.handle_event(event)
+            running_server.player.handle_event(event)
+            running_server.com_player.handle_event(event)
 
 
 def render_world():

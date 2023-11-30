@@ -1,11 +1,11 @@
 from pico2d import load_image, draw_rectangle
 
-import running_server100
+import running_server
 
 
 class ComFinishLine:
-    def __init__(self):
-        self.x, self.y = 1480,230
+    def __init__(self,x):
+        self.x, self.y = x,230
         self.image = load_image('finish_line.png')
         self.state = 0 # 0이면 끊어지기 전
     def draw(self):

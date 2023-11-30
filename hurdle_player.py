@@ -6,7 +6,7 @@ from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_
 import finish_line
 import game_framework
 import game_world
-import running_server100
+import running_server
 import you_win_mode
 from camera import Camera
 
