@@ -3,7 +3,7 @@ import game_framework
 import game_world
 import you_win_mode
 
-PIXEL_PER_METER = (10.0/0.3)
+PIXEL_PER_METER = (100/2)
 RUN_SPEED_KMPH = 0.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
@@ -15,7 +15,7 @@ FRAMES_PER_ACTION = 6
 
 import time
 
-from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music
+from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, load_wav
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE
 
 import finish_line
@@ -147,7 +147,7 @@ class Runner:
         self.state_machine.start()
         self.space_down_count = 0
         self.time = time.time()
-        self.sound = load_music('runningsound_effect.wav')
+        self.sound = load_wav('runningsound_effect.wav')
         self.sound.set_volume(50)
 
     def update(self):

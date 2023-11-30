@@ -1,7 +1,7 @@
 import time
 
 from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, SDLK_t, \
-    SDL_KEYDOWN, SDLK_SPACE, get_time
+    SDL_KEYDOWN, SDLK_SPACE, get_time, load_wav
 
 import finish_line
 import game_framework
@@ -11,7 +11,7 @@ import you_win_mode
 from camera import Camera
 from javelin import Javelin
 
-PIXEL_PER_METER = (10.0/0.3)
+PIXEL_PER_METER = (100/2)
 RUN_SPEED_KMPH = 4.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
@@ -189,7 +189,7 @@ class Thrower:
         self.is_jumping = False
         self.time = time.time()
         self.collision = False
-        self.sound = load_music('runningsound_effect.wav')
+        self.sound = load_wav('runningsound_effect.wav')
         self.sound.set_volume(50)
         self.camera = 0
 

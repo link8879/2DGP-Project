@@ -1,7 +1,8 @@
 #달리기 게임 플레이어
 import time
 
-from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, SDLK_j,SDL_KEYDOWN, SDLK_SPACE
+from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, SDLK_j, \
+    SDL_KEYDOWN, SDLK_SPACE, load_wav
 
 import finish_line
 import game_framework
@@ -10,7 +11,7 @@ import running_server
 import you_win_mode
 from camera import Camera
 
-PIXEL_PER_METER = (10.0/0.3)
+PIXEL_PER_METER = (100/2)
 RUN_SPEED_KMPH = 4.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
@@ -56,8 +57,8 @@ class Run:
         player.velocity += 1.0
         pps = player.change_velocity_to_pps()
 
-        player.x = clamp(0, player.x, running_server100.background.w-1)
-        player.y = clamp(0, player.y, running_server100.background.h-1)
+        player.x = clamp(0, player.x, running_server.background.w-1)
+        player.y = clamp(0, player.y, running_server.background.h-1)
 
         TIME_PER_ACTION -= 0.1
         ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
@@ -91,7 +92,7 @@ class Run:
 
     @staticmethod
     def draw(player):
-        sx, sy = player.x - running_server100.background.window_left, player.y - running_server100.background.window_bottom
+        sx, sy = player.x - running_server.background.window_left, player.y - running_server.background.window_bottom
         if int(player.frame) == 0:
             player.image.clip_draw(28, 661 - 33, 12, 32, sx, sy, 36, 96)
         elif int(player.frame) == 1:
@@ -111,8 +112,8 @@ class Jump:
     def enter(player,e):
         # if not player.is_jump:
             #player.x += 10
-            player.x = clamp(0, player.x, running_server100.background.w-1)
-            player.y = clamp(0, player.y, running_server100.background.h-1)
+            player.x = clamp(0, player.x, running_server.background.w-1)
+            player.y = clamp(0, player.y, running_server.background.h-1)
             player.strength = 150
             player.is_jumping = True
     @staticmethod
@@ -129,15 +130,15 @@ class Jump:
         # 점프 중 수평 운동
         player.x += pps * game_framework.frame_time
         # 이동 범위 제한
-        player.x = clamp(0, player.x, running_server100.background.w - 1)
-        player.y = clamp(0, player.y, running_server100.background.h - 1)
+        player.x = clamp(0, player.x, running_server.background.w - 1)
+        player.y = clamp(0, player.y, running_server.background.h - 1)
         if player.y <= 130:
             player.state_machine.handle_event(('LAND',0))
 
 
     @staticmethod
     def draw(player):
-        sx, sy = player.x - running_server100.background.window_left, player.y - running_server100.background.window_bottom
+        sx, sy = player.x - running_server.background.window_left, player.y - running_server.background.window_bottom
         player.image.clip_draw(191, 661 - 72, 31, 19, sx, sy, 93, 57)
 
 class StateMachine:
@@ -155,12 +156,12 @@ class StateMachine:
                 self.cur_state.exit(self.player,e)
                 self.cur_state = next_state
                 self.cur_state.enter(self.player,e)
-                if running_server100.background.window_left == 0:
+                if running_server.background.window_left == 0:
                     pass
-                elif running_server100.background.window_left >= running_server100.background.w - running_server100.background.canvas_width - 1:
+                elif running_server.background.window_left >= running_server.background.w - running_server.background.canvas_width - 1:
                     pass
                 else:
-                    running_server100.com_player.camera -= 50
+                    running_server.com_player.camera -= 50
 
 
                 return True
@@ -189,7 +190,7 @@ class HurdleRunner:
         self.is_jumping = False
         self.time = time.time()
         self.collision = False
-        self.sound = load_music('runningsound_effect.wav')
+        self.sound = load_wav('runningsound_effect.wav')
         self.sound.set_volume(50)
 
     def update(self):
