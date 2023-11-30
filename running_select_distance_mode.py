@@ -7,7 +7,8 @@ import hurdle110_mode
 import javelin_mode
 import running100_mode
 import running_server
-import select_difficulty_mode
+import select_running_difficulty_mode
+import title_mode
 
 
 def init():
@@ -35,16 +36,16 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.quit()
+            game_framework.change_mode(title_mode)
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_1):
             running_server.difficulty = 1       #100
-            game_framework.change_mode(select_difficulty_mode)
+            game_framework.change_mode(select_running_difficulty_mode)
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_2):
             running_server.difficulty = 2       #200
-            game_framework.change_mode(select_difficulty_mode)
+            game_framework.change_mode(select_running_difficulty_mode)
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_3):
             running_server.difficulty = 3       #300
-            game_framework.change_mode(select_difficulty_mode)
+            game_framework.change_mode(select_running_difficulty_mode)
 
 
 def pause():

@@ -7,12 +7,12 @@ import running_server
 import you_lose_mode
 
 PIXEL_PER_METER = (100/2)
-RUN_SPEED_KMPH = 10.0 # Km / Hour
+RUN_SPEED_KMPH = 15.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-TIME_PER_ACTION = 0.5
+TIME_PER_ACTION = 0.3
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 6
 
@@ -41,7 +41,7 @@ class StartGame:
 
     @staticmethod
     def draw(player):
-        player.image.clip_draw(6, 661 - 150, 31 - 6, 150 - 131, 20, 250, 75, 57)
+        player.image.clip_draw(6, 661 - 150, 31 - 6, 150 - 131, player.x, player.y, 75, 57)
 
 class Run:
     @staticmethod
@@ -110,7 +110,7 @@ class StateMachine:
 class ComRunningPlayer:
     def __init__(self):
         self.x = 20
-        self.y = 250
+        self.y = 240
         self.frame = 1
         self.image = load_image('complayer_animation.png')
         self.state_machine = StateMachine(self)
