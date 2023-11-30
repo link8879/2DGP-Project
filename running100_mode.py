@@ -20,7 +20,7 @@ def init():
     running_server.player = Runner()
     running_server.com_player = ComRunningPlayer()
     running_server.player_finishline = FinishLine(5000)
-    running_server.com_finishline = ComFinishLine(5000  )
+    running_server.com_finishline = ComFinishLine(5000)
 
     game_world.add_object(running_server.background,0)
     game_world.add_object(running_server.player,1)
