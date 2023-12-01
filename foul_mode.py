@@ -10,11 +10,11 @@ def init():
     global bgm
     global start_time
 
-    bgm = load_music('start_music.mp3')
+    bgm = load_music('foul_music.wav')
     bgm.set_volume(100)
     bgm.play()
 
-    second_sound = load_music('startsound.wav')
+
     start_time = get_time()
 
 def handle_events():

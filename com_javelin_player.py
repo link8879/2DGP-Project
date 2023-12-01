@@ -210,7 +210,7 @@ class ComThrower:
 
 
     def change_velocity_to_pps(self):
-        PIXEL_PER_METER = (100/2)
+        PIXEL_PER_METER = ()
         RUN_SPEED_MPM = (self.velocity * 1000.0 / 60.0)
         RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
         RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)

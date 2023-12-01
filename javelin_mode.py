@@ -48,7 +48,6 @@ def handle_events():
             game_framework.change_mode(title_mode)
         else:
             javelin_server.player.handle_event(event)
-            #javelin_server.com_player.handle_event(event)
 
 
 def render_world():
@@ -67,7 +66,7 @@ def update():
     current_time = get_time()
 
     if current_time - start_time >= 5 and is_played == False:
-        second_sound.set_volume(300)
+        second_sound.set_volume(100)
         second_sound.play()
         is_played = True
 

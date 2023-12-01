@@ -10,7 +10,7 @@ import javelin_server
 
 class FoulLine:
     def __init__(self):
-        self.x = 1500
+        self.x = 900
         self.y = 130
         self.is_collision = False
     def update(self):
