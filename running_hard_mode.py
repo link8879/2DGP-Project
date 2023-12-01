@@ -19,18 +19,18 @@ def init():
 
     if running_server.distance == 1:
         running_server.background = RunningGround('running_ground.png')
-        running_server.player_finishline = FinishLine(5000)
-        running_server.com_finishline = ComFinishLine(5000)
+        running_server.player_finishline = FinishLine(3020)
+        running_server.com_finishline = ComFinishLine(3020)
         pass
     elif running_server.distance == 2:
         running_server.background = RunningGround('running_ground200.png')
-        running_server.player_finishline = FinishLine(10000)
-        running_server.com_finishline = ComFinishLine(10000)
+        running_server.player_finishline = FinishLine(6020)
+        running_server.com_finishline = ComFinishLine(6020)
         pass
     elif running_server.distance == 3:
         running_server.background = RunningGround('running_ground300.png')
-        running_server.player_finishline = FinishLine(15000)
-        running_server.com_finishline = ComFinishLine(15000)
+        running_server.player_finishline = FinishLine(9020)
+        running_server.com_finishline = ComFinishLine(9020)
         pass
 
     running_server.player = Runner()

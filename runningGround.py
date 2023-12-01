@@ -6,6 +6,7 @@ from camera import Camera
 
 class RunningGround:
     def __init__(self,name):
+        print(name)
         self.image = load_image(name)
         self.canvas_width = get_canvas_width()
         self.canvas_height = get_canvas_height()

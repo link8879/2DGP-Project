@@ -166,7 +166,7 @@ class StateMachine:
     def draw(self):
         self.cur_state.draw(self.player)
 
-class ComHurdleRunner:
+class ComHardHurdleRunner:
     def __init__(self):
         self.x = 20
         self.y = 250

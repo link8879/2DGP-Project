@@ -18,13 +18,22 @@ def init():
     global start_time
     global hurdles
 
-    running_server.background = RunningGround()
+    if running_server.distance == 1:
+        running_server.background = RunningGround('hurdle_ground110.png')
+        running_server.player_finishline = FinishLine(3320)
+        running_server.com_finishline = ComFinishLine(3320)
+        pass
+    elif running_server.distance == 2:
+        running_server.background = RunningGround('hurdle_ground400.png')
+        running_server.player_finishline = FinishLine(12020)
+        running_server.com_finishline = ComFinishLine(12020)
+        pass
+
     running_server.player = HurdleRunner()
     running_server.com_player = ComHurdleRunner()
-    running_server.player_finishline = FinishLine()
-    running_server.com_finishline = ComFinishLine()
-    hurdles = [Hurdle(i*500 + 500,86) for i in range(4)]
-    com_hurdles = [Hurdle(i*500 + 500, 228) for i in range(4)]
+
+    hurdles = [Hurdle(i*300 + 300,86) for i in range(10)]
+    com_hurdles = [Hurdle(i*300 + 300, 228) for i in range(10)]
 
     game_world.add_object(running_server.background,0)
     game_world.add_object(running_server.player,1)

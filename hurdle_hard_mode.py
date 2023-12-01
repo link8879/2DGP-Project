@@ -2,12 +2,13 @@ from pico2d import *
 import game_framework
 import game_world
 import title_mode
+from hurdle_player import HurdleRunner
 from runningGround import RunningGround
-from running_player import Runner
-from com_running_player import ComRunningPlayer
+from com_hard_hurdle_player import ComHardHurdleRunner
 from finish_line import FinishLine
 from com_finish_line import ComFinishLine
 import running_server
+from hurdle import Hurdle
 
 def init():
     global playing
@@ -15,26 +16,24 @@ def init():
     global second_sound
     global is_played
     global start_time
+    global hurdles
 
     if running_server.distance == 1:
-        running_server.background = RunningGround('running_ground.png')
-        running_server.player_finishline = FinishLine(3020)
-        running_server.com_finishline = ComFinishLine(3020)
+        running_server.background = RunningGround('hurdle_ground110.png')
+        running_server.player_finishline = FinishLine(3320)
+        running_server.com_finishline = ComFinishLine(3320)
         pass
     elif running_server.distance == 2:
-        running_server.background = RunningGround('running_ground200.png')
-        running_server.player_finishline = FinishLine(6020)
-        running_server.com_finishline = ComFinishLine(6020)
-        pass
-    elif running_server.distance == 3:
-        running_server.background = RunningGround('running_ground300.png')
-        running_server.player_finishline = FinishLine(9020)
-        running_server.com_finishline = ComFinishLine(9020)
+        running_server.background = RunningGround('hurdle_ground400.png')
+        running_server.player_finishline = FinishLine(12020)
+        running_server.com_finishline = ComFinishLine(12020)
         pass
 
-    running_server.player = Runner()
-    running_server.com_player = ComRunningPlayer()
+    running_server.player = HurdleRunner()
+    running_server.com_player = ComHardHurdleRunner()
 
+    hurdles = [Hurdle(i*2000 + 500,86) for i in range(10)]
+    com_hurdles = [Hurdle(i*2000 + 500, 228) for i in range(10)]
 
     game_world.add_object(running_server.background,0)
     game_world.add_object(running_server.player,1)
@@ -42,8 +41,22 @@ def init():
     game_world.add_object(running_server.com_finishline,0)
     game_world.add_object(running_server.player_finishline,0)
 
-    game_world.add_collision_pair('player:finishline',running_server.player, None)
-    game_world.add_collision_pair('player:finishline',None,running_server.player_finishline)
+    for hurdle in hurdles:
+        game_world.add_object(hurdle, 0)
+
+    for com_hurdle in com_hurdles:
+        game_world.add_object(com_hurdle, 0)
+
+    game_world.add_collision_pair('com_player:hurdles',running_server.com_player,None)
+    for com_hurdle in com_hurdles:
+        game_world.add_collision_pair('com_player:hurdles',None,com_hurdle)
+
+    game_world.add_collision_pair('player:hurdles',running_server.player,None)
+    for hurdle in hurdles:
+        game_world.add_collision_pair('player:hurdles',None,hurdle)
+
+    game_world.add_collision_pair('player:finishline', running_server.player, None)
+    game_world.add_collision_pair('player:finishline', None, running_server.player_finishline)
 
     game_world.add_collision_pair('com_player:finishline', running_server.com_player, None)
     game_world.add_collision_pair('com_player:finishline', None, running_server.com_finishline)
@@ -68,7 +81,6 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
         else:
-         #  running_sever100.player.handle_event(event)
             running_server.player.handle_event(event)
             running_server.com_player.handle_event(event)
 
@@ -86,6 +98,7 @@ def update():
         game_object.update()
 
     game_world.handle_collisions()
+
     current_time = get_time()
 
     if current_time - start_time >= 5 and is_played == False:
