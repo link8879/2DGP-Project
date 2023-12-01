@@ -6,12 +6,7 @@ from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_
 import finish_line
 import foul_mode
 import game_framework
-import game_world
-import javelin_mode
 import javelin_server
-import you_win_mode
-from camera import Camera
-from javelin import Javelin
 
 class FoulLine:
     def __init__(self):
@@ -35,4 +30,3 @@ class FoulLine:
             self.is_collision = True
             game_framework.push_mode(foul_mode)
             javelin_server.flying_distance.append(0)
-            pass
