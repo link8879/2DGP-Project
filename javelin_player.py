@@ -59,6 +59,8 @@ class Run:
         global FRAMES_PER_ACTION
         global pps
 
+        player.sound.play()
+
         player.velocity += 1.0
         pps = player.change_velocity_to_pps()
 
@@ -120,22 +122,10 @@ class Throw:
         # game_world.remove_object(javelin_server.player)
     @staticmethod
     def exit(player,e):
-        player.is_jumping = False
         pass
 
     @staticmethod
     def do(player):
-        # global pps
-        # player.y += player.jump_force * game_framework.frame_time
-        # player.jump_force -= 200 * game_framework.frame_time
-        #
-        # # 점프 중 수평 운동
-        # player.x += pps * game_framework.frame_time
-        # # 이동 범위 제한
-        # player.x = clamp(0, player.x, javelin_server.background.w - 1)
-        # player.y = clamp(0, player.y, javelin_server.background.h - 1)
-        # if player.y <= 130:
-        #     player.state_machine.handle_event(('LAND',0))
         pass
 
     @staticmethod
@@ -143,6 +133,8 @@ class Throw:
         sx, sy = player.x - javelin_server.background.window_left, player.y - javelin_server.background.window_bottom
         player.image.clip_draw(136, 661 - 269, 24, 25, sx, sy, 72, 75)
         pass
+
+
 
 class StateMachine:
     def __init__(self, player):
@@ -185,10 +177,7 @@ class Thrower:
         self.velocity = 4.0
         self.state_machine = StateMachine(self)
         self.state_machine.start()
-        self.jump_force = 0
-        self.is_jumping = False
         self.time = time.time()
-        self.collision = False
         self.sound = load_wav('runningsound_effect.wav')
         self.sound.set_volume(50)
         self.camera = 0
@@ -201,17 +190,14 @@ class Thrower:
         if current_time - self.time < 5:
             return
         self.state_machine.handle_event(('INPUT',event))
-        self.sound.play()
+
 
     def draw(self):
         self.state_machine.draw()
-        #draw_rectangle(* self.get_bb())
+        draw_rectangle(* self.get_bb())
 
     def get_bb(self):
-        if self.is_jumping:
-            return self.x - 45, self.y - 30, self.x + 45, self.y + 30
-        else:
-            return self.x -15, self.y -50, self.x +15, self.y +50
+        return self.x -15, self.y -50, self.x +15, self.y +50
 
     def handle_collision(self, group, other):
         pass

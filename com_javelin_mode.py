@@ -31,7 +31,7 @@ def init():
     bgm.set_volume(100)
     bgm.play()
 
-    second_sound = load_music('startsound.wav')
+    second_sound = load_music('javelin_startsound.wav')
     is_played = False
 
     start_time = get_time()
@@ -48,7 +48,6 @@ def handle_events():
             game_framework.change_mode(title_mode)
         else:
             javelin_server.player.handle_event(event)
-            #javelin_server.com_player.handle_event(event)
 
 
 def render_world():

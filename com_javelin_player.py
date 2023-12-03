@@ -1,7 +1,7 @@
 import time
 
 from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, SDLK_t, \
-    SDL_KEYDOWN, SDLK_SPACE, get_time
+    SDL_KEYDOWN, SDLK_SPACE, get_time, load_wav
 
 import finish_line
 import game_framework
@@ -12,7 +12,7 @@ from camera import Camera
 from com_javelin import ComJavelin
 from javelin import Javelin
 
-PIXEL_PER_METER = (100 / 2)
+PIXEL_PER_METER = (10/0.33)
 RUN_SPEED_KMPH = 4.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
@@ -61,19 +61,26 @@ class Run:
         global FRAMES_PER_ACTION
         global pps
 
-        TIME_PER_ACTION -= 0.001
+        if TIME_PER_ACTION >= 0.15:
+            TIME_PER_ACTION -= 0.0001
+            print(TIME_PER_ACTION)
 
         ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
         FRAMES_PER_ACTION = 6
 
-        player.velocity += 0.005
+        if player.velocity < 20:
+            player.velocity += 0.015
+
         pps = player.change_velocity_to_pps()
 
         player.x = clamp(0, player.x, javelin_server.background.w-1)
         player.y = clamp(0, player.y, javelin_server.background.h-1)
+        player.run_count += 1
 
-        print(pps)
-        pass
+        if player.run_count > 50:
+            player.sound.play()
+            player.run_count = 0
+
     @staticmethod
     def exit(player,e):
         pass
@@ -116,7 +123,6 @@ class Throw:
         javelin_server.javelin = ComJavelin(player.velocity,player.x,player.y)
         game_world.add_object(javelin_server.javelin,0)
         player.camera = 1
-        # game_world.remove_object(javelin_server.player)
     @staticmethod
     def exit(player,e):
         player.is_jumping = False
@@ -124,6 +130,7 @@ class Throw:
 
     @staticmethod
     def do(player):
+        global pps
         pass
 
     @staticmethod
@@ -173,13 +180,11 @@ class ComThrower:
         self.velocity = 10
         self.state_machine = StateMachine(self)
         self.state_machine.start()
-        self.jump_force = 0
-        self.is_jumping = False
         self.time = time.time()
-        self.collision = False
-        self.sound = load_music('runningsound_effect.wav')
+        self.sound = load_wav('runningsound_effect.wav')
         self.sound.set_volume(50)
         self.camera = 0
+        self.run_count = 0
 
     def update(self):
         self.state_machine.update()
@@ -189,28 +194,20 @@ class ComThrower:
         if current_time - self.time < 5:
             return
         self.state_machine.handle_event(('INPUT',event))
-        self.sound.play()
 
     def draw(self):
         self.state_machine.draw()
         #draw_rectangle(* self.get_bb())
 
     def get_bb(self):
-        if self.is_jumping:
-            return self.x - 45, self.y - 30, self.x + 45, self.y + 30
-        else:
-            return self.x -15, self.y -50, self.x +15, self.y +50
+        return self.x -15, self.y -50, self.x +15, self.y +50
 
     def handle_collision(self, group, other):
         if group == 'foulLine:Complayer':
             self.state_machine.handle_event(('THROW',0))
-            print('col')
-
-
-
 
     def change_velocity_to_pps(self):
-        PIXEL_PER_METER = ()
+        PIXEL_PER_METER = (10/0.33)
         RUN_SPEED_MPM = (self.velocity * 1000.0 / 60.0)
         RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
         RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)

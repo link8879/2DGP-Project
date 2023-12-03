@@ -1,4 +1,4 @@
-from pico2d import load_image, load_music, clamp
+from pico2d import load_image, load_music, clamp, load_wav
 
 import com_javelin_mode
 import game_framework
@@ -6,6 +6,9 @@ import javelin_mode
 import javelin_server
 import you_win_mode
 import time
+
+def land(e):
+    return e[0] == 'LAND'
 
 class Flying:
     @staticmethod
@@ -18,6 +21,7 @@ class Flying:
 
     @staticmethod
     def do(player):
+        global distance
         pps = player.change_velocity_to_pps()
         player.y += player.strength * game_framework.frame_time
         player.strength -= 100 * game_framework.frame_time
@@ -27,15 +31,12 @@ class Flying:
         # 이동 범위 제한
         player.x = clamp(0, player.x, javelin_server.background.w - 1)
         player.y = clamp(0, player.y, javelin_server.background.h - 1)
+
         if player.y <= 130:
             player.velocity = 0
             pps = 0
             player.y = 130
-
-            player.timer += game_framework.frame_time
-            if player.timer > 5.0:
-                game_framework.change_mode(com_javelin_mode)
-        pass
+            player.state_machine.handle_event(('LAND', 0))
 
     @staticmethod
     def draw(player):
@@ -59,11 +60,36 @@ class Flying:
 
         pass
 
+class Landing:
+    @staticmethod
+    def enter(player,e):
+        sound = load_wav('javelin_landing_sound.wav')
+        sound.set_volume(100)
+        sound.play()
+        pass
+    @staticmethod
+    def exit(player,e):
+        pass
+
+    @staticmethod
+    def do(player):
+        player.timer += game_framework.frame_time
+
+        if player.timer > 5.0:
+            game_framework.change_mode(com_javelin_mode)
+
+    @staticmethod
+    def draw(player):
+        sx, sy = player.x - javelin_server.background.window_left, player.y - javelin_server.background.window_bottom
+
+        player.image.clip_draw(326, 661 - 358, 18, 36, sx, sy, 54, 108)
+
 class StateMachine:
     def __init__(self, player):
         self.player = player
         self.cur_state = Flying
-
+        self.transitions = {Flying: {land: Landing},
+                            Landing: {}}
     def handle_event(self, e):
 
         for check_event, next_state in self.transitions[self.cur_state].items():
@@ -102,8 +128,6 @@ class Javelin:
         self.strength = velocity * 10
         self.time = time.time()
         self.collision = False
-        self.sound = load_music('runningsound_effect.wav')
-        self.sound.set_volume(50)
         self.timer = 0
 
         global distance
@@ -111,7 +135,17 @@ class Javelin:
         flight_time = 2 * self.strength / 100
         distance = flight_time * pps
 
-        javelin_server.flying_distance.append(distance)
+        temp = 0
+
+        if distance < 900:
+            temp = 0
+        else:
+            temp = (distance-self.x) * 0.033
+        javelin_server.flying_distance.append(temp)
+
+        print(distance)
+        print(temp)
+
     def update(self):
         self.state_machine.update()
 
@@ -120,7 +154,6 @@ class Javelin:
         if current_time - self.time < 5:
             return
         self.state_machine.handle_event(('INPUT',event))
-        self.sound.play()
 
     def draw(self):
         self.state_machine.draw()
