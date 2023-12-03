@@ -3,7 +3,7 @@ import game_framework
 import game_world
 import you_win_mode
 
-PIXEL_PER_METER = (100/2)
+PIXEL_PER_METER = (10/0.33)
 RUN_SPEED_KMPH = 0.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
@@ -51,6 +51,7 @@ class Run:
         global ACTION_PER_TIME
         global FRAMES_PER_ACTION
         global pps
+        player.sound.play()
 
         player.velocity += 1.0
         pps = player.change_velocity_to_pps()
@@ -158,7 +159,6 @@ class Runner:
         if current_time - self.time < 5:
             return
         self.state_machine.handle_event(('INPUT',event),self)
-        self.sound.play()
 
     def draw(self):
         self.state_machine.draw()
@@ -173,7 +173,7 @@ class Runner:
 
 
     def change_velocity_to_pps(self):
-        PIXEL_PER_METER = (10.0 / 0.3)
+        PIXEL_PER_METER = (10/0.33)
         RUN_SPEED_MPM = (self.velocity * 1000.0 / 60.0)
         RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
         RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
