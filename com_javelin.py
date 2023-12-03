@@ -37,6 +37,8 @@ class Flying:
         pass
     @staticmethod
     def exit(player,e):
+        player.landing_sound.play()
+        player.flying_sound.stop()
         pass
 
     @staticmethod
@@ -154,6 +156,13 @@ class ComJavelin:
         self.strength = velocity * 10
         self.time = time.time()
         self.timer = 0
+
+        self.landing_sound = load_wav('javelin_landing_sound.wav')
+        self.landing_sound.set_volume(100)
+
+        self.flying_sound = load_music('flying_sound.wav')
+        self.flying_sound.set_volume(100)
+        self.flying_sound.repeat_play()
 
         global distance
         pps = self.change_velocity_to_pps()

@@ -13,10 +13,11 @@ def land(e):
 class Flying:
     @staticmethod
     def enter(player,e):
-
         pass
     @staticmethod
     def exit(player,e):
+        player.landing_sound.play()
+        player.flying_sound.stop()
         pass
 
     @staticmethod
@@ -63,9 +64,7 @@ class Flying:
 class Landing:
     @staticmethod
     def enter(player,e):
-        sound = load_wav('javelin_landing_sound.wav')
-        sound.set_volume(100)
-        sound.play()
+
         pass
     @staticmethod
     def exit(player,e):
@@ -129,6 +128,14 @@ class Javelin:
         self.time = time.time()
         self.collision = False
         self.timer = 0
+
+        self.landing_sound = load_wav('javelin_landing_sound.wav')
+        self.landing_sound.set_volume(100)
+
+        self.flying_sound = load_music('flying_sound.wav')
+        self.flying_sound.set_volume(100)
+        self.flying_sound.repeat_play()
+        
 
         global distance
         pps = self.change_velocity_to_pps()
