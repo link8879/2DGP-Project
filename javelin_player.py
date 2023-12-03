@@ -2,13 +2,9 @@ import time
 
 from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, SDLK_t, \
     SDL_KEYDOWN, SDLK_SPACE, get_time, load_wav
-
-import finish_line
 import game_framework
 import game_world
 import javelin_server
-import you_win_mode
-from camera import Camera
 from javelin import Javelin
 
 PIXEL_PER_METER = (10/0.33)
@@ -169,6 +165,10 @@ class StateMachine:
 
 class Thrower:
     def __init__(self):
+        global TIME_PER_ACTION
+        global ACTION_PER_TIME
+        global FRAMES_PER_ACTION
+
         self.x = 20
         self.y = 130
         self.image = load_image('player_animation.png')
@@ -182,6 +182,9 @@ class Thrower:
         self.sound.set_volume(50)
         self.camera = 0
 
+        TIME_PER_ACTION = 0.5
+        ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+        FRAMES_PER_ACTION = 6
     def update(self):
         self.state_machine.update()
 

@@ -98,7 +98,7 @@ class Landing:
         player.timer += game_framework.frame_time
 
         if player.timer > 5.0:
-            if len(javelin_server.com_flying_distance) == 1:    #나중에 3으로 바꿔야 함
+            if len(javelin_server.com_flying_distance) == 3:    #나중에 3으로 바꿔야 함
                 calculate_all_distance()                    # 승패판정
             else:
                 game_framework.change_mode(javelin_mode)

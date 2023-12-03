@@ -172,6 +172,9 @@ class StateMachine:
 
 class ComThrower:
     def __init__(self):
+        global TIME_PER_ACTION
+        global ACTION_PER_TIME
+        global FRAMES_PER_ACTION
         self.x = 20
         self.y = 130
         self.image = load_image('complayer_animation.png')
@@ -185,6 +188,10 @@ class ComThrower:
         self.sound.set_volume(50)
         self.camera = 0
         self.run_count = 0
+
+        TIME_PER_ACTION = 0.5
+        ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+        FRAMES_PER_ACTION = 6
 
     def update(self):
         self.state_machine.update()
