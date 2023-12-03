@@ -99,7 +99,11 @@ class Landing:
     def do(player):
         player.timer += game_framework.frame_time
 
-        if player.timer > 5.0:
+        if player.timer > 1.0 and not player.music_played:
+            player.after_landing_music.play()
+            player.music_played = True
+
+        if player.timer > 7.0:
             if len(javelin_server.com_flying_distance) == 3:    #나중에 3으로 바꿔야 함
                 calculate_all_distance()                    # 승패판정
             else:
@@ -156,6 +160,7 @@ class ComJavelin:
         self.strength = velocity * 10
         self.time = time.time()
         self.timer = 0
+        self.music_played = False
 
         self.landing_sound = load_wav('javelin_landing_sound.wav')
         self.landing_sound.set_volume(100)
@@ -163,6 +168,9 @@ class ComJavelin:
         self.flying_sound = load_music('flying_sound.wav')
         self.flying_sound.set_volume(100)
         self.flying_sound.repeat_play()
+
+        self.after_landing_music = load_music('after_landing_music.mp3')
+        self.after_landing_music.set_volume(100)
 
         global distance
         pps = self.change_velocity_to_pps()

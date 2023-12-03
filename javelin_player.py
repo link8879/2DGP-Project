@@ -200,7 +200,7 @@ class Thrower:
         draw_rectangle(* self.get_bb())
 
     def get_bb(self):
-        return self.x -15, self.y -50, self.x +15, self.y +50
+        return self.x -15, self.y -50, self.x +40, self.y +50
 
     def handle_collision(self, group, other):
         pass

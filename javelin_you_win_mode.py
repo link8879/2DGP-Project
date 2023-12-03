@@ -35,7 +35,7 @@ def draw():
     clear_canvas()
     image.draw(400,300)
     for i in range(len(javelin_server.flying_distance)):
-        font.draw(100 +100 * i, 100 ,'Distance: %.2f m' % javelin_server.flying_distance[i], (255, 255, 255))
+        font.draw(100 +200 * i, 100 ,'Distance: %.2f m' % javelin_server.flying_distance[i], (255, 255, 255))
     update_canvas()
 
 def handle_events():
