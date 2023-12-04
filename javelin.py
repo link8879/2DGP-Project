@@ -1,4 +1,4 @@
-from pico2d import load_image, load_music, clamp, load_wav
+from pico2d import load_image, load_music, clamp, load_wav, load_font
 
 import com_javelin_hard_mode
 import game_framework
@@ -20,7 +20,6 @@ class Flying:
 
     @staticmethod
     def do(player):
-        global distance
         pps = player.change_velocity_to_pps()
         player.y += player.strength * game_framework.frame_time
         player.strength -= 100 * game_framework.frame_time
@@ -70,11 +69,15 @@ class Landing:
 
     @staticmethod
     def do(player):
+        global distance
         player.timer += game_framework.frame_time
 
         if player.timer > 1.0 and not player.music_played:
             player.after_landing_music.play()
             player.music_played = True
+
+
+
         if player.timer > 7.0:
             import com_javelin_mode
             if javelin_server.javelin_difficulty == 1:
@@ -84,8 +87,16 @@ class Landing:
 
     @staticmethod
     def draw(player):
+        global distance
         sx, sy = player.x - javelin_server.background.window_left, player.y - javelin_server.background.window_bottom
+        font = load_font('ENCR10B.TTF', 20)
+        temp = ((player.init_x + distance) - javelin_server.foul_line.x) * 0.033
 
+        print(temp)
+        if distance+player.init_x < javelin_server.foul_line.x:
+            temp = 0
+        font.draw(100, 100, 'Distance: %.2fm' % temp,
+                  (255, 255, 255))
         player.image.clip_draw(326, 661 - 358, 18, 36, sx, sy, 54, 108)
 
 class StateMachine:
@@ -121,6 +132,7 @@ class Javelin:
     def __init__(self,velocity,x,y):
 
         self.x = x
+        self.init_x = x
         self.y = y
         self.throwLocation = x
         self.image = load_image('player_animation.png')
@@ -151,10 +163,10 @@ class Javelin:
 
         temp = 0
 
-        if distance < 900:
+        if distance+self.x < javelin_server.foul_line.x:
             temp = 0
         else:
-            temp = (distance-self.x) * 0.033
+            temp = ((self.x+distance) - javelin_server.foul_line.x) * 0.033
         javelin_server.flying_distance.append(temp)
 
         print(distance)

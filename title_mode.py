@@ -46,7 +46,6 @@ def handle_events():
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_3):
             game_framework.change_mode(javelin_select_difficulty_mode)
 
-
 def pause():
  pass
 

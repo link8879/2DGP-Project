@@ -38,7 +38,7 @@ def draw():
     image.draw(400,300)
 
     for i in range(len(javelin_server.flying_distance)):
-        font.draw(100+ 100 * i, 100 ,'Distance: %.2f m' % javelin_server.flying_distance[i], (255, 255, 255))
+        font.draw(50+ 250 * i, 100 ,'Distance: %.2fm' % javelin_server.flying_distance[i], (255, 255, 255))
 
 
     update_canvas()
@@ -51,6 +51,8 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_RETURN):
+            javelin_server.com_flying_distance.clear()
+            javelin_server.flying_distance.clear()
             game_framework.change_mode(title_mode)
 
 def pause():

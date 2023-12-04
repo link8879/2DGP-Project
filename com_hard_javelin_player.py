@@ -180,7 +180,7 @@ class ComHardThrower:
         self.image = load_image('complayer_animation.png')
         self.frame = 1
         self.action = 0
-        self.velocity = 15
+        self.velocity = 30
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.time = time.time()

@@ -1,4 +1,4 @@
-from pico2d import load_image, load_music, clamp, load_wav
+from pico2d import load_image, load_music, clamp, load_wav, load_font
 
 import game_framework
 import javelin_mode
@@ -83,11 +83,6 @@ class Flying:
 class Landing:
     @staticmethod
     def enter(player,e):
-        sound = load_music('javelin_landing_sound.wav')
-        sound.set_volume(100)
-        sound.play()
-        print('land')
-        print(javelin_server.com_flying_distance)
         pass
     @staticmethod
     def exit(player,e):
@@ -111,7 +106,14 @@ class Landing:
     @staticmethod
     def draw(player):
         sx, sy = player.x - javelin_server.background.window_left, player.y - javelin_server.background.window_bottom
+        font = load_font('ENCR10B.TTF', 20)
+        temp = ((player.init_x + distance) - javelin_server.foul_line.x) * 0.033
+        print(temp)
+        if distance+player.init_x < javelin_server.foul_line.x:
+            temp = 0
 
+        font.draw(100, 100, 'Distance: %.2fm' %temp,
+                  (255, 255, 255))
         player.image.clip_draw(326, 661 - 358, 18, 36, sx, sy, 54, 108)
 
 class StateMachine:
@@ -147,6 +149,7 @@ class ComJavelin:
     def __init__(self,velocity,x,y):
 
         self.x = x
+        self.init_x = x
         self.y = y
         self.throwLocation = x
         self.image = load_image('player_animation.png')
@@ -177,10 +180,11 @@ class ComJavelin:
 
         temp = 0
 
-        if distance < 900:
+        if distance + self.x < javelin_server.foul_line.x:
             temp = 0
         else:
-            temp = (distance-self.x) * 0.033
+            temp = ((self.x + distance) - javelin_server.foul_line.x) * 0.033
+
         javelin_server.com_flying_distance.append(temp)
 
     def update(self):
@@ -205,7 +209,7 @@ class ComJavelin:
 
 
     def change_velocity_to_pps(self):
-        PIXEL_PER_METER = (10.0 / 0.3)
+        PIXEL_PER_METER = (10.0 / 0.33)
         RUN_SPEED_MPM = (self.velocity * 1000.0 / 60.0)
         RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
         RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
