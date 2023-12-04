@@ -1,9 +1,7 @@
 import time
 
-from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, SDLK_t, \
-    SDL_KEYDOWN, SDLK_SPACE, load_font
+from pico2d import draw_rectangle
 
-import finish_line
 import foul_mode
 import game_framework
 import javelin_server

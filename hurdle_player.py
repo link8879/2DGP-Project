@@ -125,7 +125,7 @@ class Jump:
     def do(player):
         global pps
         player.y += player.strength * game_framework.frame_time
-        player.strength -= 250 * game_framework.frame_time
+        player.strength -= 290 * game_framework.frame_time
 
         # 점프 중 수평 운동
         player.x += pps * game_framework.frame_time

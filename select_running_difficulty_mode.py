@@ -8,8 +8,6 @@ import javelin_mode
 import running_hard_mode
 import running_mode
 import hurdle_select_distance_mode
-import running200_mode
-import running300_mode
 import running_select_distance_mode
 import running_server
 

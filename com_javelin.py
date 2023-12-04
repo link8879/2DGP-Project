@@ -1,12 +1,10 @@
 from pico2d import load_image, load_music, clamp, load_wav
 
-import com_javelin_mode
 import game_framework
 import javelin_mode
 import javelin_server
 import javelin_you_lose_mode
 import javelin_you_win_mode
-import you_win_mode
 import time
 
 def land(e):

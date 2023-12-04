@@ -1,14 +1,10 @@
 from pico2d import *
-
-import com_javelin_hard_mode
-import com_javelin_mode
 import game_framework
 import game_world
 import title_mode
+from com_hard_javelin_player import ComHardThrower
 from javelin_ground import JavelinGround
-from javelin_player import Thrower
 from javelin_foul_line import FoulLine
-#from com_javelin_player import ComThrower
 import javelin_server
 
 def init():
@@ -19,14 +15,15 @@ def init():
     global start_time
 
     javelin_server.background = JavelinGround()
-    javelin_server.player = Thrower()
+    javelin_server.player = ComHardThrower()
     javelin_server.foul_line = FoulLine()
 
     game_world.add_object(javelin_server.background,0)
     game_world.add_object(javelin_server.player,1)
     game_world.add_object(javelin_server.foul_line,1)
-    game_world.add_collision_pair('foulLine:player',javelin_server.player,None)
-    game_world.add_collision_pair('foulLine:player',None,javelin_server.foul_line)
+
+    game_world.add_collision_pair('foulLine:Complayer',javelin_server.player,None)
+    game_world.add_collision_pair('foulLine:Complayer',None,javelin_server.foul_line)
 
     bgm = load_music('start_music.mp3')
     bgm.set_volume(100)
@@ -67,7 +64,7 @@ def update():
     current_time = get_time()
 
     if current_time - start_time >= 5 and not is_played:
-        second_sound.set_volume(100)
+        second_sound.set_volume(300)
         second_sound.play()
         is_played = True
 
@@ -87,8 +84,5 @@ def pause():
     pass
 
 def resume():
-    if javelin_server.javelin_difficulty == 1:
-        game_framework.change_mode(com_javelin_mode)
-    else:
-        game_framework.change_mode(com_javelin_hard_mode)
+    pass
 

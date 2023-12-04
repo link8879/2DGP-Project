@@ -1,26 +1,10 @@
 #달리기 게임 플레이어
 import game_framework
-import game_world
 import you_win_mode
-
-PIXEL_PER_METER = (10/0.33)
-RUN_SPEED_KMPH = 0.0 # Km / Hour
-RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
-RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
-RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
-
-TIME_PER_ACTION = 0.5
-ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 6
-
 import time
-
-from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, load_wav
+from pico2d import load_image, clamp, load_wav
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE
-
-import finish_line
 import running_server
-from camera import Camera
 
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
@@ -47,9 +31,6 @@ class Run:
     time_elapsed = 0
     @staticmethod
     def enter(player,e):
-        global TIME_PER_ACTION
-        global ACTION_PER_TIME
-        global FRAMES_PER_ACTION
         global pps
         player.sound.play()
         if player.velocity < 60:
@@ -59,12 +40,12 @@ class Run:
         player.x = clamp(0, player.x, running_server.background.w-1)
         player.y = clamp(0, player.y, running_server.background.h-1)
 
-        TIME_PER_ACTION -= 0.1
-        ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-        FRAMES_PER_ACTION = 6
+        player.TIME_PER_ACTION -= 0.1
+        player.ACTION_PER_TIME = 1.0 / player.TIME_PER_ACTION
+        player.FRAMES_PER_ACTION = 6
 
-        if TIME_PER_ACTION <= 0.25:
-            TIME_PER_ACTION = 0.25
+        if player.TIME_PER_ACTION <= 0.25:
+            player.TIME_PER_ACTION = 0.25
     @staticmethod
     def exit(player,e):
         pass
@@ -72,22 +53,18 @@ class Run:
     @staticmethod
     def do(player):
         global pps
-        global TIME_PER_ACTION
         if pps >= 0.01:
             player.velocity -= 0.01
         else:
             pass
-
-
-        TIME_PER_ACTION += 0.001
-
-        ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-        FRAMES_PER_ACTION = 6
+        player.TIME_PER_ACTION += 0.001
+        player.ACTION_PER_TIME = 1.0 / player.TIME_PER_ACTION
+        player.FRAMES_PER_ACTION = 6
 
         pps = player.change_velocity_to_pps()
 
         player.x += pps * game_framework.frame_time
-        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
+        player.frame = (player.frame + player.FRAMES_PER_ACTION * player.ACTION_PER_TIME * game_framework.frame_time) % 6
 
     @staticmethod
     def draw(player):
@@ -150,6 +127,16 @@ class Runner:
         self.time = time.time()
         self.sound = load_wav('runningsound_effect.wav')
         self.sound.set_volume(50)
+        self.PIXEL_PER_METER = (10 / 0.33)
+
+        self.RUN_SPEED_MPM = (self.velocity * 1000.0 / 60.0)
+        self.RUN_SPEED_MPS = (self.RUN_SPEED_MPM / 60.0)
+        self.RUN_SPEED_PPS = (self.RUN_SPEED_MPS * self.PIXEL_PER_METER)
+
+        self.TIME_PER_ACTION = 0.5
+        self.ACTION_PER_TIME = 1.0 / self.TIME_PER_ACTION
+        self.FRAMES_PER_ACTION = 6
+
 
     def update(self):
         self.state_machine.update()
@@ -174,7 +161,8 @@ class Runner:
 
     def change_velocity_to_pps(self):
         PIXEL_PER_METER = (10/0.33)
-        RUN_SPEED_MPM = (self.velocity * 1000.0 / 60.0)
-        RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
-        RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
-        return RUN_SPEED_PPS
+        self.PIXEL_PER_METER = (10 / 0.33)
+        self.RUN_SPEED_MPM = (self.velocity * 1000.0 / 60.0)
+        self.RUN_SPEED_MPS = (self.RUN_SPEED_MPM / 60.0)
+        self.RUN_SPEED_PPS = (self.RUN_SPEED_MPS * self.PIXEL_PER_METER)
+        return self.RUN_SPEED_PPS

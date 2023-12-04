@@ -1,9 +1,9 @@
 from pico2d import *
 
-import com_javelin_mode
+import com_javelin_hard_mode
 import game_framework
 import game_world
-import javelin_mode
+import javelin_server
 import title_mode
 
 def init():
@@ -60,5 +60,8 @@ def pause():
     pass
 
 def resume():
-    print(5)
-    game_framework.change_mode(com_javelin_mode)
+    import com_javelin_mode
+    if javelin_server.javelin_difficulty == 1:
+        game_framework.change_mode(com_javelin_mode)
+    else:
+        game_framework.change_mode(com_javelin_hard_mode)

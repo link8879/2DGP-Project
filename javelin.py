@@ -1,10 +1,8 @@
 from pico2d import load_image, load_music, clamp, load_wav
 
-import com_javelin_mode
+import com_javelin_hard_mode
 import game_framework
-import javelin_mode
 import javelin_server
-import you_win_mode
 import time
 
 def land(e):
@@ -78,7 +76,11 @@ class Landing:
             player.after_landing_music.play()
             player.music_played = True
         if player.timer > 7.0:
-            game_framework.change_mode(com_javelin_mode)
+            import com_javelin_mode
+            if javelin_server.javelin_difficulty == 1:
+                game_framework.change_mode(com_javelin_mode)
+            else:
+                game_framework.change_mode(com_javelin_hard_mode)
 
     @staticmethod
     def draw(player):

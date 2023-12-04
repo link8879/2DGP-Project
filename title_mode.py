@@ -5,6 +5,7 @@ from pico2d import load_image, clear_canvas, update_canvas, get_events
 
 import hurdle_mode
 import javelin_mode
+import javelin_select_difficulty_mode
 import running_mode
 import hurdle_select_distance_mode
 import running_select_distance_mode
@@ -43,7 +44,7 @@ def handle_events():
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_2):
             game_framework.change_mode(hurdle_select_distance_mode)
         elif(event.type, event.key) == (SDL_KEYDOWN,SDLK_3):
-            game_framework.change_mode(javelin_mode)
+            game_framework.change_mode(javelin_select_difficulty_mode)
 
 
 def pause():

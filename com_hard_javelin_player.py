@@ -3,11 +3,14 @@ import time
 from pico2d import load_image, clamp, get_canvas_width, get_canvas_height, draw_rectangle, load_music, SDLK_t, \
     SDL_KEYDOWN, SDLK_SPACE, get_time, load_wav
 
+import finish_line
 import game_framework
 import game_world
 import javelin_server
+import you_win_mode
+from camera import Camera
 from com_javelin import ComJavelin
-
+from javelin import Javelin
 
 PIXEL_PER_METER = (10/0.33)
 RUN_SPEED_KMPH = 4.0 # Km / Hour
@@ -167,7 +170,7 @@ class StateMachine:
     def draw(self):
         self.cur_state.draw(self.player)
 
-class ComThrower:
+class ComHardThrower:
     def __init__(self):
         global TIME_PER_ACTION
         global ACTION_PER_TIME
@@ -177,7 +180,7 @@ class ComThrower:
         self.image = load_image('complayer_animation.png')
         self.frame = 1
         self.action = 0
-        self.velocity = 10
+        self.velocity = 15
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.time = time.time()
