@@ -52,8 +52,8 @@ class Run:
         global FRAMES_PER_ACTION
         global pps
         player.sound.play()
-
-        player.velocity += 1.0
+        if player.velocity < 60:
+            player.velocity += 1.0
         pps = player.change_velocity_to_pps()
 
         player.x = clamp(0, player.x, running_server.background.w-1)

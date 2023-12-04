@@ -16,7 +16,7 @@ class FinishLine:
 
         #draw_rectangle(*self.get_bb())
     def get_bb(self):
-        return self.x -22, self.y - 40.5, self.x + 22, self.y + 40.5
+        return self.x -22, self.y - 50, self.x + 22, self.y + 50
     def update(self):
         pass
     def handle_collision(self,group, other):

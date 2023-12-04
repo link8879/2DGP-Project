@@ -12,7 +12,7 @@ import you_win_mode
 from camera import Camera
 
 PIXEL_PER_METER = (10/0.33)
-RUN_SPEED_KMPH = 10.0 # Km / Hour
+RUN_SPEED_KMPH = 13.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -61,10 +61,8 @@ class Run:
         global TIME_PER_ACTION
         global ACTION_PER_TIME
         global FRAMES_PER_ACTION
-        global pps
 
         player.velocity += 1.0
-        pps = player.change_velocity_to_pps()
 
         player.x = clamp(0, player.x, running_server.background.w-1)
         player.y = clamp(0, player.y, running_server.background.h-1)
@@ -113,15 +111,10 @@ class Jump:
 
     @staticmethod
     def do(player):
-        global pps
         player.y += player.strength * game_framework.frame_time
-        player.strength -= 200 * game_framework.frame_time
+        player.strength -= 280 * game_framework.frame_time
 
-        # 점프 중 수평 운동
-        player.x += pps * game_framework.frame_time
-        # 이동 범위 제한
-        player.x = clamp(0, player.x, running_server.background.w - 1)
-        player.y = clamp(0, player.y, running_server.background.h - 1)
+        player.x += RUN_SPEED_PPS * game_framework.frame_time
         if player.y <= 250:
             player.state_machine.handle_event(('LAND',0))
 
@@ -201,12 +194,4 @@ class ComHurdleRunner:
              self.state_machine.handle_event(('JUMP',0))
         elif group == 'com_player:finishline':
             game_framework.change_mode(you_lose_mode)
-
-    def change_velocity_to_pps(self):
-        PIXEL_PER_METER = (100/2)
-        RUN_SPEED_MPM = (self.velocity * 1000.0 / 60.0)
-        RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
-        RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
-        return RUN_SPEED_PPS
-
 

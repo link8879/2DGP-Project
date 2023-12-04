@@ -22,18 +22,22 @@ def init():
         running_server.background = RunningGround('hurdle_ground110.png')
         running_server.player_finishline = FinishLine(3320)
         running_server.com_finishline = ComFinishLine(3320)
-        pass
+
+        hurdles = [Hurdle(i * 300 + 320, 86) for i in range(10)]
+        com_hurdles = [Hurdle(i * 300 + 320, 228) for i in range(10)]
+
     elif running_server.distance == 2:
         running_server.background = RunningGround('hurdle_ground400.png')
         running_server.player_finishline = FinishLine(12020)
         running_server.com_finishline = ComFinishLine(12020)
+
+        hurdles = [Hurdle(i * 1200 + 1220, 86) for i in range(10)]
+        com_hurdles = [Hurdle(i * 1200 + 1220, 228) for i in range(10)]
         pass
 
     running_server.player = HurdleRunner()
     running_server.com_player = ComHardHurdleRunner()
 
-    hurdles = [Hurdle(i*2000 + 500,86) for i in range(10)]
-    com_hurdles = [Hurdle(i*2000 + 500, 228) for i in range(10)]
 
     game_world.add_object(running_server.background,0)
     game_world.add_object(running_server.player,1)

@@ -54,7 +54,9 @@ class Run:
         global FRAMES_PER_ACTION
         global pps
         player.sound.play()
-        player.velocity += 1.0
+        if player.velocity < 60:
+            player.velocity += 1.0
+        print(player.velocity)
         pps = player.change_velocity_to_pps()
 
         player.x = clamp(0, player.x, running_server.background.w-1)
@@ -74,6 +76,7 @@ class Run:
     def do(player):
         global pps
         global TIME_PER_ACTION
+
         if pps >= 0.01:
             player.velocity -= 0.01
         else:
@@ -86,7 +89,6 @@ class Run:
         FRAMES_PER_ACTION = 6
 
         pps = player.change_velocity_to_pps()
-        print(pps)
         player.x += pps * game_framework.frame_time
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
 
@@ -110,8 +112,6 @@ class Run:
 class Jump:
     @staticmethod
     def enter(player,e):
-        # if not player.is_jump:
-            #player.x += 10
             player.x = clamp(0, player.x, running_server.background.w-1)
             player.y = clamp(0, player.y, running_server.background.h-1)
             player.strength = 150
@@ -125,7 +125,7 @@ class Jump:
     def do(player):
         global pps
         player.y += player.strength * game_framework.frame_time
-        player.strength -= 200 * game_framework.frame_time
+        player.strength -= 250 * game_framework.frame_time
 
         # 점프 중 수평 운동
         player.x += pps * game_framework.frame_time
@@ -205,13 +205,13 @@ class HurdleRunner:
 
     def draw(self):
         self.state_machine.draw()
-        #draw_rectangle(* self.get_bb())
+        draw_rectangle(* self.get_bb())
 
     def get_bb(self):
         if self.is_jumping:
-            return self.x - 45, self.y - 30, self.x + 45, self.y + 30
+            return self.x - 30, self.y - 25, self.x + 40, self.y + 25
         else:
-            return self.x -15, self.y -50, self.x +15, self.y +50
+            return self.x -10, self.y -45, self.x +10, self.y +45
 
     def handle_collision(self, group, other):
         if group == 'player:hurdles':
