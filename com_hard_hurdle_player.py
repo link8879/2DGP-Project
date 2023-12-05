@@ -188,10 +188,7 @@ class ComHardHurdleRunner:
         #draw_rectangle(* self.get_bb())
 
     def get_bb(self):
-        if self.is_jumping:
-            return self.x - 45, self.y - 30, self.x + 45, self.y + 30
-        else:
-            return self.x -35, self.y -50, self.x +35, self.y +50
+        return self.x -35, self.y -50, self.x +50, self.y +50
 
     def handle_collision(self, group, other):
         if group == 'com_player:hurdles':

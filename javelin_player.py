@@ -197,7 +197,7 @@ class Thrower:
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(* self.get_bb())
+        #draw_rectangle(* self.get_bb())
 
     def get_bb(self):
         return self.x -15, self.y -50, self.x +40, self.y +50

@@ -33,7 +33,7 @@ class Run:
     def enter(player,e):
         global pps
         player.sound.play()
-        if player.velocity < 60:
+        if player.velocity < 40:
             player.velocity += 1.0
         pps = player.change_velocity_to_pps()
 

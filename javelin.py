@@ -1,3 +1,6 @@
+import math
+from math import asin
+
 from pico2d import load_image, load_music, clamp, load_wav, load_font
 
 import com_javelin_hard_mode
@@ -31,6 +34,8 @@ class Flying:
         player.y = clamp(0, player.y, javelin_server.background.h - 1)
 
         if player.y <= 130:
+
+
             player.velocity = 0
             pps = 0
             player.y = 130
@@ -142,6 +147,7 @@ class Javelin:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.strength = velocity * 10
+        self.init_strength = self.strength
         self.time = time.time()
         self.timer = 0
         self.music_played = False
@@ -168,9 +174,6 @@ class Javelin:
         else:
             temp = ((self.x+distance) - javelin_server.foul_line.x) * 0.033
         javelin_server.flying_distance.append(temp)
-
-        print(distance)
-        print(temp)
 
     def update(self):
         self.state_machine.update()

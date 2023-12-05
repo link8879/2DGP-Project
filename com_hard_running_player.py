@@ -53,14 +53,6 @@ class Run:
 
     @staticmethod
     def do(player):
-        # global last_update_time
-        #
-        # current_time = get_time()
-        # if current_time - last_update_time > 0.3:  # 0.2초(200 밀리초)마다 로직 실행
-        #     player.frame += 1
-        #     player.x += 10
-        #     last_update_time = current_time
-
         player.x += RUN_SPEED_PPS * game_framework.frame_time
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
 

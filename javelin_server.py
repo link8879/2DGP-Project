@@ -5,3 +5,4 @@ foul_line = None
 flying_distance = []
 com_flying_distance = []
 javelin_difficulty = None
+angles = []

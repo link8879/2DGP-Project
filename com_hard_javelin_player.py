@@ -62,14 +62,14 @@ class Run:
         global pps
 
         if TIME_PER_ACTION >= 0.15:
-            TIME_PER_ACTION -= 0.0001
+            TIME_PER_ACTION -= 0.00001
             print(TIME_PER_ACTION)
 
         ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
         FRAMES_PER_ACTION = 6
 
-        if player.velocity < 20:
-            player.velocity += 0.015
+        if player.velocity < 31:
+            player.velocity += 0.007
 
         pps = player.change_velocity_to_pps()
 
@@ -89,11 +89,6 @@ class Run:
     def do(player):
         global pps
         global TIME_PER_ACTION
-        # if pps >= 0.01:
-        #     player.velocity -= 0.01
-        # else:
-        #     pass
-
         pps = player.change_velocity_to_pps()
         player.x += pps * game_framework.frame_time
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
@@ -120,6 +115,7 @@ class Run:
 class Throw:
     @staticmethod
     def enter(player,e):
+        print(player.velocity)
         javelin_server.javelin = ComJavelin(player.velocity,player.x,player.y)
         game_world.add_object(javelin_server.javelin,0)
         player.camera = 1
@@ -180,7 +176,12 @@ class ComHardThrower:
         self.image = load_image('complayer_animation.png')
         self.frame = 1
         self.action = 0
-        self.velocity = 30
+        if len(javelin_server.com_flying_distance) == 0:
+            self.velocity = 12
+        elif len(javelin_server.com_flying_distance) == 1:
+            self.velocity = 16
+        elif len(javelin_server.com_flying_distance) == 2:
+            self.velocity = 20
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.time = time.time()
@@ -207,7 +208,7 @@ class ComHardThrower:
         #draw_rectangle(* self.get_bb())
 
     def get_bb(self):
-        return self.x -15, self.y -50, self.x +15, self.y +50
+        return self.x -15, self.y -50, self.x +10, self.y +50
 
     def handle_collision(self, group, other):
         if group == 'foulLine:Complayer':
