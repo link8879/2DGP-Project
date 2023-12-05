@@ -38,7 +38,17 @@ def draw():
     clear_canvas()
     image.draw(400,300)
     font.draw(100, 100, 'Time: %.2f sec' % total_time, (255, 255, 255))
-    font.draw(400, 100, 'Velocity: %.2f m/s' % (100 / total_time), (255, 255, 255))
+    print(running_server.distance)
+    if running_server.distance == 1:
+        font.draw(400, 100, 'Velocity: %.2f m/s' % (100 / total_time), (255, 255, 255))
+    elif running_server.distance == 2:
+        font.draw(400, 100, 'Velocity: %.2f m/s' % (200 / total_time), (255, 255, 255))
+    elif running_server.distance == 3:
+        font.draw(400, 100, 'Velocity: %.2f m/s' % (300 / total_time), (255, 255, 255))
+    elif running_server.distance == 4:
+        font.draw(400, 100, 'Velocity: %.2f m/s' % (110 / total_time), (255, 255, 255))
+    elif running_server.distance == 5:
+        font.draw(400, 100, 'Velocity: %.2f m/s' % (400 / total_time), (255, 255, 255))
     update_canvas()
 
 def handle_events():
