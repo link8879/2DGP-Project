@@ -160,8 +160,6 @@ class StateMachine:
                     pass
                 elif running_server.background.window_left >= running_server.background.w - running_server.background.canvas_width - 1:
                     pass
-                else:
-                    running_server.com_player.camera -= 50
 
 
                 return True
