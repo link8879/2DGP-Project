@@ -162,7 +162,7 @@ class StateMachine:
 class ComHurdleRunner:
     def __init__(self):
         self.x = 20
-        self.y = 250
+        self.y = 240
         self.image = load_image('complayer_animation.png')
         self.frame = 1
         self.action = 0
