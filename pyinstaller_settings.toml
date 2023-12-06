@@ -4,10 +4,11 @@ main_file = 'main.py'
 # 데이타 파일들을 지정하세요.
 data_files = [
     # fill here
-    'complayer_animation.png','EasyOrHard.png','ENCR10B.TTF','finish_line.png','hurdle.png',
-    'hurdle_ground110.png','hurdle_ground400.png','javelinGround.png','player_animation.png',
-    'running_ground.png','running_ground200.png','running_ground300.png','select_hurdle_distance.png',
-    'select_running_distance.png','tileset.png','title.png','you_lose.png','you_win.png'
+    'after_landing_music.mp3','complayer_animation.png','EasyOrHard.png','ENCR10B.TTF','finish_line.png','flying_sound.wav',
+    'foul_music.wav','hurdle.png','hurdle_ground110.png','hurdle_ground400.png','javelin_landing_sound.wav','javelin_startsound.wav',
+    'javelinGround.png','lose_music.mp3','player_animation.png','running_ground.png','running_ground200.png','running_ground300.png',
+    'runningsound_effect.wav','select_hurdle_distance.png','select_running_distance.png','start_music.mp3','startsound.wav','tileset.png',
+    'title.png','titlemusic.mp3','win_music.mp3','you_lose.png','you_win.png'
 ]
 
 # 데이타가 들어있는 폴더들을 지정하세요.
